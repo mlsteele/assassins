@@ -157,7 +157,7 @@ if (Meteor.isClient) {
         });
       }
   });
-  
+
   Template.login.events({
     "submit form": function(event) {
       event.preventDefault();
