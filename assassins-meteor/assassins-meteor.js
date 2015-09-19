@@ -10,7 +10,15 @@ Router.route('/create', {
 Router.route('/join', {
     template: 'join'
 });
-
+Router.route('/dashboard', {
+    template: 'dashboard'
+});
+Router.route('/pregame', {
+    template: 'pregame'
+});
+Router.route('/start', {
+    template: 'start'
+});
 if (Meteor.isClient) {
   // counter starts at 0
   Session.setDefault('counter', 0);

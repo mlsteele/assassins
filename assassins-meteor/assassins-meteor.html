@@ -5,10 +5,14 @@
 
 <template name="home">
   {{#if currentUser}}
-    {{#if gameRunning}}
-      {{> dashboard}}
+    {{#if joinedGame}}
+      {{#if gameRunning}}
+        {{> dashboard}}
+      {{else}}
+        {{> pregame}}
+      {{/if}}
     {{else}}
-      {{> pregame}}
+      {{> start}}
     {{/if}}
   {{else}}
     {{> start}}
@@ -39,8 +43,21 @@
 
 <template name="dashboard">
   <h2>Dashboard</h2>
+  <b>Your Target:</b> {{target}} <br>
+  <button name="die">I've been killed!</button><br>
+  Players:
+  {{> playerslist}}
 </template>
 
 <template name="pregame">
-  The game hasn't started yet.
+  The game hasn't started yet. Here are the signed up players:
+  {{> playerslist}}
+</template>
+
+<template name="playerslist">
+  <ul>
+    {{#each player}}
+      <li>{{name}}</li>
+    {{/each}}
+  </ul>
 </template>
