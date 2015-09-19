@@ -20,22 +20,17 @@ Router.route('/start', {
     template: 'start'
 });
 if (Meteor.isClient) {
-  // counter starts at 0
-  Session.setDefault('counter', 0);
-
-  Template.hello.helpers({
-    counter: function () {
-      return Session.get('counter');
-    },
-    users: function () {
-      return Users.find({});
-    }
-  });
-
-  Template.hello.events({
-    'click button': function () {
-      // increment the counter when button is clicked
-      Session.set('counter', Session.get('counter') + 1);
+  Template.join.events({
+    "submit form": function(event) {
+      event.preventDefault();
+      var game = Games.findOne({
+        "id": event.target.name.value
+      });
+      if (game) {
+        console.log("cool, dude");
+      } else {
+        console.log("no such game");
+      }
     }
   });
   Template.inGame.events({
