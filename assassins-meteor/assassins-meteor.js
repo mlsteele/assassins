@@ -132,18 +132,18 @@ if (Meteor.isClient) {
           id: userId
         });
         var killerId = userInfo.killerId;
+        Posts.update({
+            id: killerId
+        }, {
+              $set: {current_victim: userInfo.current_victim}
+        });
         var killerInfo = Post.findOne({
           id: killerId
         });
         Posts.update({
-            id: killerId
-        }, {
-              $set:{current_victim: userInfo.current_victim}
-        });
-        Posts.update({
             id: userId
         }, {
-             $set:{alive: false}
+             $set: {alive: false}
         });
         console.log("email is trying to send");
         Email.send({
@@ -152,7 +152,7 @@ if (Meteor.isClient) {
             killerInfo.email
            ],
           "subject": "your target is",
-          "text": userInfo.current_victim,
+          "text": killerInfo.current_victim,
           "html": '<h1 style="color: blue; background: red">MORE EXCITING</h1><br><span style="font-size:6pt">I apologize for that.</style>'
         });
       }
