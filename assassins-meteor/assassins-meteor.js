@@ -1,3 +1,4 @@
+/**** Routes ****/
 Router.configure({
     layoutTemplate: 'main'
 });
@@ -23,6 +24,14 @@ Router.route('/start', {
     template: 'start'
 });
 
+/**** Helper Functions ****/
+function currentGameId() {
+    var user = Users.findOne(Session.get("currentUser"));
+    if (user != undefined) return user.gameId;
+}
+
+
+/**** Client Code****/
 if (Meteor.isClient) {
   Template.create.helpers({
     error_message: function() {
@@ -98,6 +107,18 @@ if (Meteor.isClient) {
         if (user == undefined) return false;
         var game = Games.findOne({id: user.gameId});
         return (game.managerId == user.id);
+      }
+  });
+  Template.playerslist.helpers({
+      players: function() {
+        var users = Users.find({gameId: currentGameId()});
+        var managerId = Games.findOne({id: currentGameId()}).managerId;
+        return users.map(function(user) {
+            return {
+                name: user.id,
+                manager: managerId == user.id
+            }
+        });
       }
   });
 

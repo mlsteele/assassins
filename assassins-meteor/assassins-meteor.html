@@ -81,8 +81,12 @@
 
 <template name="playerslist">
   <ul>
-    {{#each player}}
-      <li>{{name}}</li>
+    {{#each players}}
+      <li>{{name}}
+        {{#if manager}}
+          (Game Manager)
+        {{/if}}
+      </li>
     {{/each}}
   </ul>
 </template>
