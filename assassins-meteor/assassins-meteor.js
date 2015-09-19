@@ -45,8 +45,6 @@ if (Meteor.isClient) {
       }
     }
   });
-
-<<<<<<< HEAD
   
   Template.dashboard.events({
       "I've been killed!": function() {
