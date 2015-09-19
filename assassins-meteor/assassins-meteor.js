@@ -57,26 +57,27 @@ if (Meteor.isClient) {
 
 
   Template.dashboard.events({
-      "I've been killed": function() {
-      // get user's victim and send it to the killer
-          var userId = Meteor.userId();
-          var userInfo = Posts.findOne({
-            id: userId
-          });
-          var killerId = userInfo.killerId;
-          var killerInfo = Post.findOne({
-              id: killerId
-          });
-      Email.send({
-        "from": "assassins-master@mit.edu",
-        "to": [
-          killerInfo.email
-        ],
-        "subject": "your target is",
-        "text": userInfo.current_victim,
-        "html": '<h1 style="color: blue; background: red">MORE EXCITING</h1><br><span style="font-size:6pt">I apologize for that.</style>'
-      });
-      console.log("email sent");
+      "click button": function() {
+        console.log("here we are");
+        // get user's victim and send it to the killer
+        var userId = Meteor.userId();
+        var userInfo = Posts.findOne({
+          id: userId
+        });
+        var killerId = userInfo.killerId;
+        var killerInfo = Post.findOne({
+          id: killerId
+        });
+        console.log("email is trying to send");
+        Email.send({
+          "from": "assassins-master@mit.edu",
+          "to": [
+            killerInfo.email
+           ],
+          "subject": "your target is",
+          "text": userInfo.current_victim,
+          "html": '<h1 style="color: blue; background: red">MORE EXCITING</h1><br><span style="font-size:6pt">I apologize for that.</style>'
+        });
       }
   });
   
