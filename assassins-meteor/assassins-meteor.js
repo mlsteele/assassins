@@ -199,6 +199,26 @@ if (Meteor.isServer) {
       console.log("email sent");
     }
   });
+
+  Meteor.methods({
+    initializeGame: function(game_id) {
+      var game = Games.findOne({"id": game_id});
+      if (!game) {
+        return {"status": "failed", "error": "No such game."}
+      }
+
+      var users = Users.find({"gameID": game_id}).fetch();
+      users = shuffleArray(users);
+      for (var i = 0; i < users.length; i++) {
+        var u1 = users[i];
+        var u2 = users[(i + 1) % users.length];
+        u1.current_victim = u2.id;
+        u1.alive = true;
+        u1.killerId = undefined;
+        u1.victim_list = [];
+      }
+    }
+  });
 }
 
 
@@ -214,7 +234,7 @@ function load_sample_data() {
     Users.insert({
     id: "Anna",
     email: "super_assassin@mit.edu",
-    killerId: "Andres",
+    killer_id: "Andres",
     gameID: "Sample",
     alive: true,
     current_victim: "Jess",
@@ -245,4 +265,15 @@ function load_sample_data() {
     mailing_list: "super_assassins@mit.edu",
     manager_id: "Jess"
   });
+}
+
+function shuffleArray(array) {
+  // https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
+  for (var i = array.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var temp = array[i];
+    array[i] = array[j];
+    array[j] = temp;
+  }
+  return array;
 }
