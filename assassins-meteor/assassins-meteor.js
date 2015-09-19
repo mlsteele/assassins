@@ -23,6 +23,41 @@ Router.route('/start', {
     template: 'start'
 });
 if (Meteor.isClient) {
+  Template.create.events({
+    "submit form": function(event) {
+      event.preventDefault();
+      var game_id = event.target.name.value;
+      var mailing_list = event.target.list.value;
+      var game = Games.findOne({
+        "id": game_id
+      });
+
+      if (game) {
+        console.log("That already exists yo");
+        return;
+      }
+
+      if (!game_id) {
+        console.log("For the love of god give a name.");
+        return;
+      }
+
+      if (!mailing_list) {
+        console.log("provide a mailing list.")
+        return;
+      }
+
+      Games.insert({
+        id: game_id,
+        mailing_list: mailing_list,
+        manager_id: "Jess" // TODO, no fair
+      });
+      Session.set("game_id", game_id);
+      console.log("Ok, diddly done.");
+      Router.go("/");
+    }
+  });
+
   Template.join.helpers({
     bad_game_id: function() {
       return Session.get("bad_game_id");
@@ -40,6 +75,7 @@ if (Meteor.isClient) {
       if (game) {
         Session.set("bad_game_id", undefined);
         Session.set("game_id", game_id);
+        Router.go("/");
       } else {
         Session.set("bad_game_id", game_id);
       }
@@ -166,6 +202,6 @@ function load_sample_data() {
   Games.insert({
     id: "Sample",
     mailing_list: "super_assassins@mit.edu",
-    manager: "Jess"
+    manager_id: "Jess"
   });
 }
