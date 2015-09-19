@@ -157,23 +157,29 @@ if (Meteor.isClient) {
 
   Template.dashboard.events({
       "click button": function() {
-        console.log("here we are");
+        console.log("128");
         // get player's victim and send it to the killer
-        /*var userId = Meteor.user()._id;
+        var userId = Meteor.user()._id;
+        currentGameId = currentGameId();
+        console.log("131");
         var player = Players.findOne({
+          gameId: currentGameId,
           userId: userId
         });
-        var killerId = player.killerId;
+        console.log("135");
+        var killer = Players.findOne({
+            gameId: currentGameId,
+            currentVictim: userId
+        });
+        console.log("137");
         Players.update({
-            id: player._id
+            userId: killer.userId
         }, {
               $set: {currentVictim: player.currentVictim}
         });
-        var killerInfo = Players.findOne({
-          id: killerId
-        });
-        Posts.update({
-            id: userId
+        console.log("142");
+        Players.update({
+            iuserId: userId
         }, {
              $set: {alive: false}
         });
@@ -186,7 +192,7 @@ if (Meteor.isClient) {
           "subject": "your target is",
           "text": killerInfo.currentVictim,
           "html": '<h1 style="color: blue; background: red">MORE EXCITING</h1><br><span style="font-size:6pt">I apologize for that.</style>'
-        });*/
+        });
       }
   });
 
@@ -231,7 +237,6 @@ if (Meteor.isServer) {
         var p2 = players[(i + 1) % players.length];
         p1.currentVictim = p2.id;
         p1.alive = true;
-        p1.killerId = undefined;
         p1.victimList = [];
       }
     }
@@ -250,7 +255,6 @@ function load_sample_data() {
   //sample user
   Players.insert({
     userId: "unknownAnna",
-    killerId: "AndresId",
     gameId: "Sample",
     alive: true,
     currentVictim: "JessId",
@@ -258,7 +262,6 @@ function load_sample_data() {
   });
   Players.insert({
     userId: "unknownJess",
-    killerId: "AnnaId",
     gameId: "Sample",
     alive: true,
     currentVictim: "AndresId",
@@ -266,7 +269,6 @@ function load_sample_data() {
   });
   Players.insert({
     userId: "unknownAndres",
-    killerId: "JessId",
     gameId: "Sample",
     alive: false,
     currentVictim: "MilesId",
@@ -275,7 +277,6 @@ function load_sample_data() {
 
   Players.insert({
     userId: "unknownMiles",
-    killerId: "JessId",
     gameId: "Sample",
     alive: false,
     currentVictim: "AnnaId",
