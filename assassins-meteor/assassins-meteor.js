@@ -45,9 +45,19 @@ if (Meteor.isClient) {
       }
     }
   });
-  
+
+  Template.pregame.helpers({
+      manager: function() {
+        var user = Users.findOne({id: Session.get("currentUser")});
+        if (user == undefined) return false;
+        var game = Games.findOne({id: user.gameId});
+        return (game.managerId == user.id);
+      }
+  });
+
+  /*
   Template.dashboard.events({
-      "I've been killed!": function() {
+      "I've been killed": function() {
       // get user's victim and send it to the killer
           var userId = Meteor.userId();
           var userInfo = Posts.findOne({
