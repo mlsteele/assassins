@@ -27,13 +27,33 @@ function currentGameId() {
     var profile = Meteor.user().profile;
     if (!profile) return undefined;
     if (!profile.currentPlayerId) return undefined;
-    var player = Players.findOne({id: profile.currentPlayerId});
+    var player = Players.findOne({_id: profile.currentPlayerId});
     if (!player) return undefined;
     return player.gameId;
 }
 
+function setCurrentPlayerId(id) {
+    if (!Meteor.user()) {
+        console.error("Setting current player but no user exists");
+        return undefined;
+    }
+    Meteor.users.update({_id: Meteor.user()._id},
+        {$set: {'profile.currentPlayerId': id}});
+}
+
 /**** Client Code****/
 if (Meteor.isClient) {
+
+  Template.home.helpers({
+    joinedGame: function() {
+      return currentGameId() != undefined
+    },
+    gameRunning: function() {
+      var game = Games.findOne({id: currentGameId()});
+      if (game == undefined) return false;
+      return game.started && !game.finished;
+    }
+  });
   Template.create.helpers({
     errorMessage: function() {
       return Session.get("createErrorMessage");
@@ -70,11 +90,23 @@ if (Meteor.isClient) {
       Games.insert({
         id: gameId,
         mailingList: mailingList,
-        managerPlayerId: "Jess" // TODO, not a name anymore!!
+        managerUserId: Meteor.user()._id,
+        started: false,
+        finished: false
       });
-      Session.set("gameId", gameId);
-      Session.set("createErrorMessage", undefined);
-      Router.go("/");
+      Players.insert({
+        gameId: gameId,
+        userId: Meteor.user()._id
+      }, function(err, playerId) {
+        if (err) {
+          console.error(err);
+          Session.set("createErrorMessage", err);
+        } else {
+          setCurrentPlayerId(playerId);
+          Router.go("/");
+        }
+
+      });
     }
   });
 
@@ -254,7 +286,9 @@ function load_sample_data() {
   Games.insert({
     id: "Sample",
     mailingList: "super_assassins@mit.edu",
-    managerPlayerId: "JessPlayerId"
+    managerPlayerId: "JessPlayerId",
+    started: false,
+    finished: false
   });
 }
 
