@@ -90,7 +90,7 @@ function load_sample_data() {
     Users.insert({
     id: "Anna",
     email: "super_assassin@mit.edu",
-    killer: "Andres",
+    killerId: "Andres",
     gameID: "Sample",
     status: "Dead",
     current_victim: "Jess",
@@ -99,7 +99,7 @@ function load_sample_data() {
   Users.insert({
     id: "Jess",
     email: "jessk@mit.edu",
-    killer: "Anna",
+    killerId: "Anna",
     gameID: "Sample",
     status: "Dead",
     current_victim: "Andres",
@@ -108,7 +108,7 @@ function load_sample_data() {
   Users.insert({
     id: "Andres",
     email: "anpere@mit.edu",
-    killer: "Jess",
+    killerId: "Jess",
     gameID: "Sample",
     status: "Dead",
     current_victim: "Anna",
