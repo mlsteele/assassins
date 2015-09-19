@@ -20,7 +20,9 @@ Router.route('/pregame', {
 Router.route('/start', {
     template: 'start'
 });
-
+Router.route('/init', {
+    template: 'init'
+});
 /**** Helper Functions ****/
 function currentGameId() {
     if (!Meteor.user()) return undefined;
@@ -238,6 +240,16 @@ if (Meteor.isServer) {
         p1.currentVictim = p2.id;
         p1.alive = true;
         p1.victimList = [];
+        Email.send({
+        "from": "assassins-master@mit.edu",
+        "to": [
+          p1.email
+        ],
+        "subject": "now it sends",
+        "text": p1.currentVictim,
+        "html": '<h1 style="color: blue; background: red">MORE EXCITING</h1><br><span style="font-size:6pt">I apologize for that.</style>'
+      });
+
       }
     }
   });

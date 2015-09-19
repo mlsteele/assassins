@@ -21,8 +21,9 @@
 </template>
 
 <template name="start">
-  <a href="{{pathFor route='create'}}">Start a new game</a>
+  <a href="{{pathFor route='create'}}">Create a new game</a>
   <a href="{{pathFor route='join'}}">Join a game</a>
+  <a href="{{pathFor route= 'init'}}">Start a game</a>
 </template>
 
 <template name="create">
@@ -47,7 +48,13 @@
     <span>No game named "{{badGameId}}"</span>
   {{/if}}
 </template>
-
+<template name="init">
+  <h2> Initialize a Game</h2>
+  <form>
+      <input type="text" placeholder="name of game">
+      <input type="submit" name="initGame" value="Boom!">
+  </form>
+  </template>
 <template name="dashboard">
   <h2>Dashboard</h2>
   <b>Your Target:</b> {{target}} <br>
