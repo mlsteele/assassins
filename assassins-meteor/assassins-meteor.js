@@ -43,13 +43,14 @@ if (Meteor.isClient) {
       // get user's victim and send it to the killer
           var userId = Meteor.userId();
           var state = Posts.findOne({
-          id: userId
-    });
+            id: userId
+          });
+      }
+  });
 
 
        //Session.set(
       //}
-  });
 }
 
 if (Meteor.isServer) {
@@ -82,7 +83,7 @@ Users = new Mongo.Collection("users");
 Users.insert({
   id: "Anna",
   email: "super_assassin@mit.edu",
-  killer: "Andres"
+  killer: "Andres",
   gameID: "Sample",
   status: "Dead",
   current_victim: "Jess",
