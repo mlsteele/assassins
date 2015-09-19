@@ -42,6 +42,7 @@ if (Meteor.isClient) {
       }
     }
   });
+
   Template.inGame.events({
       "I was killed": function() {
       // get user's victim and send it to the killer
@@ -51,10 +52,6 @@ if (Meteor.isClient) {
           });
       }
   });
-
-
-       //Session.set(
-      //}
 }
 
 if (Meteor.isServer) {
