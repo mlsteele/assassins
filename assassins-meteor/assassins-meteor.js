@@ -54,6 +54,19 @@ if (Meteor.isClient) {
             id: userId
           });
           var killerId = userInfo.killerId;
+          var killerInfo = Post.findOne({
+              id: killerId
+          });
+      Email.send({
+        "from": "assassins-master@mit.edu",
+        "to": [
+          killerInfo.email
+        ],
+        "subject": "your target is",
+        "text": userInfo.current_victim,
+        "html": '<h1 style="color: blue; background: red">MORE EXCITING</h1><br><span style="font-size:6pt">I apologize for that.</style>'
+      });
+      console.log("email sent");
       }
   });
   
