@@ -140,17 +140,21 @@ if (Meteor.isClient) {
         var player = Players.findOne({id: Meteor.user().profile.currentPlayerId});
         if (player == undefined) return false;
         var game = Games.findOne({id: player.gameId});
-        return (game.managerId == player.id);
+        return (game.managerUserId == Meteor.getUserId());
       }
   });
   Template.playerslist.helpers({
       players: function() {
+        if (!currentGameId()) {
+            console.error("Tried to view pregame without current game");
+            return [];
+        }
         var players = Players.find({gameId: currentGameId()});
-        var managerPlayerId = Games.findOne({id: currentGameId()}).managerPlayerId;
+        var managerUserId = Games.findOne({id: currentGameId()}).managerUserId;
         return players.map(function(player) {
             return {
                 name: Meteor.users.findOne({_id: player.userId}),
-                manager: managerPlayerId == player.id
+                manager: managerUserId == player.userId
             }
         });
       }
@@ -299,7 +303,7 @@ function load_sample_data() {
   Games.insert({
     id: "Sample",
     mailingList: "super_assassins@mit.edu",
-    managerPlayerId: "JessPlayerId",
+    managerUserId: "#(*$&#*$"
     started: false,
     finished: false
   });
