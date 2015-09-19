@@ -23,77 +23,78 @@ Router.route('/start', {
 
 /**** Helper Functions ****/
 function currentGameId() {
-    var user = Users.findOne(Session.get("currentUser"));
-    if (user != undefined) return user.gameId;
+    var profile = Meteor.user().profile;
+    if (!profile) return undefined;
+    if (!profile.currentGameId) return undefined;
+    return profile.currentGameId;
 }
-
 
 /**** Client Code****/
 if (Meteor.isClient) {
   Template.create.helpers({
-    error_message: function() {
-      return Session.get("create_error_message");
+    errorMessage: function() {
+      return Session.get("createErrorMessage");
     }
   });
 
   Template.create.events({
     "submit form": function(event) {
       event.preventDefault();
-      var game_id = event.target.name.value;
-      var mailing_list = event.target.list.value;
+      var gameId = event.target.name.value;
+      var mailingList = event.target.list.value;
       var game = Games.findOne({
-        "id": game_id
+        "id": gameId
       });
 
       if (game) {
-        Session.set("create_error_message",
+        Session.set("createErrorMessage",
                     "A game already exists with that name");
         return;
       }
 
-      if (!game_id) {
-        Session.set("create_error_message",
+      if (!gameId) {
+        Session.set("createErrorMessage",
                     "A game name is required.");
         return;
       }
 
-      if (!mailing_list) {
-        Session.set("create_error_message",
+      if (!mailingList) {
+        Session.set("createErrorMessage",
                     "A mailing list is required.");
         return;
       }
 
       Games.insert({
-        id: game_id,
-        mailing_list: mailing_list,
-        manager_id: "Jess" // TODO, no fair
+        id: gameId,
+        mailingList: mailingList,
+        managerId: "Jess" // TODO, no fair
       });
-      Session.set("game_id", game_id);
-      Session.set("create_error_message", undefined);
+      Session.set("gameId", gameId);
+      Session.set("createErrorMessage", undefined);
       Router.go("/");
     }
   });
 
   Template.join.helpers({
-    bad_game_id: function() {
-      return Session.get("bad_game_id");
+    badGameId: function() {
+      return Session.get("badGameId");
     }
   });
 
   Template.join.events({
     "submit form": function(event) {
       event.preventDefault();
-      var game_id = event.target.name.value;
+      var gameId = event.target.name.value;
       var game = Games.findOne({
-        "id": game_id
+        "id": gameId
       });
-      console.log("Joining " + game_id);
+      console.log("Joining " + gameId);
       if (game) {
-        Session.set("bad_game_id", undefined);
-        Session.set("game_id", game_id);
+        Session.set("badGameId", undefined);
+        Session.set("gameId", gameId);
         Router.go("/");
       } else {
-        Session.set("bad_game_id", game_id);
+        Session.set("badGameId", gameId);
       }
     }
   });
@@ -132,7 +133,7 @@ if (Meteor.isClient) {
         Posts.update({
             id: killerId
         }, {
-              $set: {current_victim: userInfo.current_victim}
+              $set: {currentVictim: userInfo.currentVictim}
         });
         var killerInfo = Post.findOne({
           id: killerId
@@ -149,7 +150,7 @@ if (Meteor.isClient) {
             killerInfo.email
            ],
           "subject": "your target is",
-          "text": killerInfo.current_victim,
+          "text": killerInfo.currentVictim,
           "html": '<h1 style="color: blue; background: red">MORE EXCITING</h1><br><span style="font-size:6pt">I apologize for that.</style>'
         });
       }
@@ -183,21 +184,21 @@ if (Meteor.isServer) {
   });
 
   Meteor.methods({
-    initializeGame: function(game_id) {
-      var game = Games.findOne({"id": game_id});
+    initializeGame: function(gameId) {
+      var game = Games.findOne({"id": gameId});
       if (!game) {
         return {"status": "failed", "error": "No such game."}
       }
 
-      var users = Users.find({"gameID": game_id}).fetch();
+      var users = Users.find({"gameId": gameId}).fetch();
       users = shuffleArray(users);
       for (var i = 0; i < users.length; i++) {
         var u1 = users[i];
         var u2 = users[(i + 1) % users.length];
-        u1.current_victim = u2.id;
+        u1.currentVictim = u2.id;
         u1.alive = true;
         u1.killerId = undefined;
-        u1.victim_list = [];
+        u1.victimList = [];
       }
     }
   });
@@ -217,45 +218,45 @@ function load_sample_data() {
     id: "Anna",
     email: "super_assassin@mit.edu",
     killer_id: "Andres",
-    gameID: "Sample",
+    gameId: "Sample",
     alive: true,
-    current_victim: "Jess",
-    victim_list: []
+    currentVictim: "Jess",
+    victimList: []
   });
   Players.insert({
     id: "Jess",
     email: "jessk@mit.edu",
     killerId: "Anna",
-    gameID: "Sample",
+    gameId: "Sample",
     alive: true,
-    current_victim: "Andres",
-    victim_list: []
+    currentVictim: "Andres",
+    victimList: []
   });
   Players.insert({
     id: "Andres",
     email: "anpere@mit.edu",
     killerId: "Jess",
-    gameID: "Sample",
+    gameId: "Sample",
     alive: false,
-    current_victim: "Miles",
-    victim_list: []
+    currentVictim: "Miles",
+    victimList: []
   });
 
   Players.insert({
     id: "Miles",
     email: "anpere@mit.edu",
     killerId: "Jess",
-    gameID: "Sample",
+    gameId: "Sample",
     alive: false,
-    current_victim: "Anna",
-    victim_list: []
+    currentVictim: "Anna",
+    victimList: []
   });
 
   //sample game
   Games.insert({
     id: "Sample",
-    mailing_list: "super_assassins@mit.edu",
-    manager_id: "Jess"
+    mailingList: "super_assassins@mit.edu",
+    managerId: "Jess"
   });
 }
 
