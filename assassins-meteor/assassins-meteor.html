@@ -1,14 +1,26 @@
-<head>
-  <title>assassins-meteor</title>
-</head>
+<template name="main">
+  <h1>Slug Assassins</h1>
+  {{> yield}}
+</template>
 
-<body>
-  <h1>Welcome to Meteor!</h1>
+<template name="start">
+  <a href="/create">Start a new game</a>
+  <a href="/join">Join a game</a>
+</template>
 
-  {{> hello}}
-</body>
+<template name="create">
+  <h2>Create a Game</h2>
+  <form>
+    <input type="text" placeholder="name of game" name="name">
+    <input type="email" placeholder="mailing list to invite" name="list">
+    <input type="submit" name="create-game" value="Go!">
+  </form>
+</template>
 
-<template name="hello">
-  <button>Click Me</button>
-  <p>You've pressed the button {{counter}} times.</p>
+<template name="join">
+  <h2>Join a game</h2>
+  <form>
+    <input type="text" placeholder="name of game" name="name">
+    <input type="submit" name="join-game" value="join">
+  </form>
 </template>
