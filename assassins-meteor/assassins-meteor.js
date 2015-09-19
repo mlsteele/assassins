@@ -55,7 +55,7 @@ if (Meteor.isClient) {
       }
   });
 
-  /*
+
   Template.dashboard.events({
       "I've been killed": function() {
       // get user's victim and send it to the killer
