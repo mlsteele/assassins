@@ -44,6 +44,21 @@
   {{/if}}
 </template>
 
+<template name="login">
+  <h2>Login!</h2>
+  Anna is the only username that will work right now
+  <form>
+    <input type="text" placeholder="Username" name="username">
+    <input type="text" placeholder="Password" name="password">
+    <input type="submit" name="login" value="login">
+  </form>
+
+
+
+  <div class="login-results"> User not found! </div>
+
+</template>
+
 <template name="dashboard">
   <h2>Dashboard</h2>
   <b>Your Target:</b> {{target}} <br>

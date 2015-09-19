@@ -10,6 +10,9 @@ Router.route('/create', {
 Router.route('/join', {
     template: 'join'
 });
+Router.route('/login', {
+    template: 'login'
+});
 Router.route('/dashboard', {
     template: 'dashboard'
 });
@@ -43,6 +46,7 @@ if (Meteor.isClient) {
     }
   });
 
+<<<<<<< HEAD
   
   Template.dashboard.events({
       "I've been killed!": function() {
@@ -55,6 +59,26 @@ if (Meteor.isClient) {
       }
   });
   
+  Template.login.events({
+    "submit form": function(event) {
+      event.preventDefault();
+      var user = Users.findOne({
+        "id": event.target.username.value
+      });
+      if (user) {
+        Session.set("currentUser", user)
+        Router.go('dashboard');
+      } else {
+        alert("User does not exist");
+      }
+    }
+  });
+
+  Template.home.helpers({
+    currentUser: function() {
+      return Session.get("currentUser");
+    }
+  })
 }
 
 if (Meteor.isServer) {
