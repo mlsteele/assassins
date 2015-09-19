@@ -23,6 +23,7 @@ Router.route('/start', {
 
 /**** Helper Functions ****/
 function currentGameId() {
+    if (!Meteor.user()) return undefined;
     var profile = Meteor.user().profile;
     if (!profile) return undefined;
     if (!profile.currentPlayerId) return undefined;
@@ -90,7 +91,6 @@ if (Meteor.isClient) {
       var game = Games.findOne({
         "id": gameId
       });
-      console.log("Joining " + gameId);
       if (game) {
         Session.set("badGameId", undefined);
         Session.set("gameId", gameId);
@@ -254,7 +254,7 @@ function load_sample_data() {
   Games.insert({
     id: "Sample",
     mailingList: "super_assassins@mit.edu",
-    managerId: "JessPlayerId"
+    managerPlayerId: "JessPlayerId"
   });
 }
 
