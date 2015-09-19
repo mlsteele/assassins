@@ -30,6 +30,12 @@ if (Meteor.isClient) {
       Session.set('counter', Session.get('counter') + 1);
     }
   });
+  Template.inGame.events({
+      "I was killed": function() {
+       // extract  
+       Session.set(
+      }
+  });
 }
 
 if (Meteor.isServer) {
