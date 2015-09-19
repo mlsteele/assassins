@@ -25,8 +25,10 @@ Router.route('/start', {
 function currentGameId() {
     var profile = Meteor.user().profile;
     if (!profile) return undefined;
-    if (!profile.currentGameId) return undefined;
-    return profile.currentGameId;
+    if (!profile.currentPlayerId) return undefined;
+    var player = Players.findOne({id: profile.currentPlayerId});
+    if (!player) return undefined;
+    return player.gameId;
 }
 
 /**** Client Code****/
@@ -67,7 +69,7 @@ if (Meteor.isClient) {
       Games.insert({
         id: gameId,
         mailingList: mailingList,
-        managerId: "Jess" // TODO, no fair
+        managerPlayerId: "Jess" // TODO, not a name anymore!!
       });
       Session.set("gameId", gameId);
       Session.set("createErrorMessage", undefined);
@@ -101,20 +103,20 @@ if (Meteor.isClient) {
 
   Template.pregame.helpers({
       manager: function() {
-        var user = Users.findOne({id: Session.get("currentUser")});
-        if (user == undefined) return false;
-        var game = Games.findOne({id: user.gameId});
-        return (game.managerId == user.id);
+        var player = Players.findOne({id: Meteor.user().profile.currentPlayerId});
+        if (player == undefined) return false;
+        var game = Games.findOne({id: player.gameId});
+        return (game.managerId == player.id);
       }
   });
   Template.playerslist.helpers({
       players: function() {
-        var users = Users.find({gameId: currentGameId()});
-        var managerId = Games.findOne({id: currentGameId()}).managerId;
-        return users.map(function(user) {
+        var players = Players.find({gameId: currentGameId()});
+        var managerPlayerId = Games.findOne({id: currentGameId()}).managerPlayerId;
+        return players.map(function(player) {
             return {
-                name: user.id,
-                manager: managerId == user.id
+                name: Meteor.users.findOne({_id: player.userId}),
+                manager: managerPlayerId == player.id
             }
         });
       }
@@ -124,18 +126,18 @@ if (Meteor.isClient) {
   Template.dashboard.events({
       "click button": function() {
         console.log("here we are");
-        // get user's victim and send it to the killer
-        var userId = Meteor.userId();
-        var userInfo = Posts.findOne({
-          id: userId
+        // get player's victim and send it to the killer
+        /*var userId = Meteor.user()._id;
+        var player = Players.findOne({
+          userId: userId
         });
-        var killerId = userInfo.killerId;
-        Posts.update({
-            id: killerId
+        var killerId = player.killerId;
+        Players.update({
+            id: player._id
         }, {
-              $set: {currentVictim: userInfo.currentVictim}
+              $set: {currentVictim: player.currentVictim}
         });
-        var killerInfo = Post.findOne({
+        var killerInfo = Players.findOne({
           id: killerId
         });
         Posts.update({
@@ -152,7 +154,7 @@ if (Meteor.isClient) {
           "subject": "your target is",
           "text": killerInfo.currentVictim,
           "html": '<h1 style="color: blue; background: red">MORE EXCITING</h1><br><span style="font-size:6pt">I apologize for that.</style>'
-        });
+        });*/
       }
   });
 
@@ -190,15 +192,15 @@ if (Meteor.isServer) {
         return {"status": "failed", "error": "No such game."}
       }
 
-      var users = Users.find({"gameId": gameId}).fetch();
-      users = shuffleArray(users);
-      for (var i = 0; i < users.length; i++) {
-        var u1 = users[i];
-        var u2 = users[(i + 1) % users.length];
-        u1.currentVictim = u2.id;
-        u1.alive = true;
-        u1.killerId = undefined;
-        u1.victimList = [];
+      var players = Players.find({"gameId": gameId}).fetch();
+      players = shuffleArray(players);
+      for (var i = 0; i < players.length; i++) {
+        var p1 = players[i];
+        var p2 = players[(i + 1) % players.length];
+        p1.currentVictim = p2.id;
+        p1.alive = true;
+        p1.killerId = undefined;
+        p1.victimList = [];
       }
     }
   });
@@ -214,41 +216,37 @@ Players = new Mongo.Collection("players");
 
 function load_sample_data() {
   //sample user
-    Players.insert({
-    id: "Anna",
-    email: "super_assassin@mit.edu",
-    killer_id: "Andres",
+  Players.insert({
+    userId: "unknownAnna",
+    killerId: "AndresId",
     gameId: "Sample",
     alive: true,
-    currentVictim: "Jess",
+    currentVictim: "JessId",
     victimList: []
   });
   Players.insert({
-    id: "Jess",
-    email: "jessk@mit.edu",
-    killerId: "Anna",
+    userId: "unknownJess",
+    killerId: "AnnaId",
     gameId: "Sample",
     alive: true,
-    currentVictim: "Andres",
+    currentVictim: "AndresId",
     victimList: []
   });
   Players.insert({
-    id: "Andres",
-    email: "anpere@mit.edu",
-    killerId: "Jess",
+    userId: "unknownAndres",
+    killerId: "JessId",
     gameId: "Sample",
     alive: false,
-    currentVictim: "Miles",
+    currentVictim: "MilesId",
     victimList: []
   });
 
   Players.insert({
-    id: "Miles",
-    email: "anpere@mit.edu",
-    killerId: "Jess",
+    userId: "unknownMiles",
+    killerId: "JessId",
     gameId: "Sample",
     alive: false,
-    currentVictim: "Anna",
+    currentVictim: "AnnaId",
     victimList: []
   });
 
@@ -256,7 +254,7 @@ function load_sample_data() {
   Games.insert({
     id: "Sample",
     mailingList: "super_assassins@mit.edu",
-    managerId: "Jess"
+    managerId: "JessPlayerId"
   });
 }
 
