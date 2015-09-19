@@ -5,6 +5,9 @@ if (Meteor.isClient) {
   Template.hello.helpers({
     counter: function () {
       return Session.get('counter');
+    },
+    users: function () {
+      return Users.find({});
     }
   });
 
@@ -21,3 +24,26 @@ if (Meteor.isServer) {
     // code to run on server at startup
   });
 }
+
+
+/*
+Database Collections: Users and Games
+Maybe we should sequester this somewhere else
+*/
+Games = new Mongo.Collection("games");
+Users = new Mongo.Collection("users");
+
+//sample user
+Users.insert({
+  id: "Anna",
+  gameID: "Sample",
+  status: "Dead",
+  current_victim: "Jess",
+  victim_list: []
+});
+
+//sample game
+Games.insert({
+  id: "Sample",
+  mailing_list: "pookie@mit.edu"
+});
