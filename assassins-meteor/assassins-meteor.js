@@ -36,6 +36,7 @@ Users = new Mongo.Collection("users");
 //sample user
 Users.insert({
   id: "Anna",
+  email: "super_assassin@mit.edu",
   gameID: "Sample",
   status: "Dead",
   current_victim: "Jess",
@@ -45,5 +46,5 @@ Users.insert({
 //sample game
 Games.insert({
   id: "Sample",
-  mailing_list: "pookie@mit.edu"
+  mailing_list: "super_assassins@mit.edu"
 });
