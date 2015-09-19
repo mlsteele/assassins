@@ -109,7 +109,11 @@ Template.join.events({
     }
   }
 });
-
+Template.init.events({
+  "submit form": function(event) {
+  var gameId = event.target
+  }
+});
 Template.pregame.helpers({
     manager: function() {
       var player = Players.findOne({id: Meteor.user().profile.currentPlayerId});

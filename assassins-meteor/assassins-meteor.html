@@ -47,14 +47,16 @@
   {{#if badGameId}}
     <span>No game named "{{badGameId}}"</span>
   {{/if}}
-</template>
+  </template>
+
 <template name="init">
   <h2> Initialize a Game</h2>
   <form>
-      <input type="text" placeholder="name of game">
+      <input type="text" placeholder="name of game" name="name">
       <input type="submit" name="initGame" value="Boom!">
   </form>
   </template>
+
 <template name="dashboard">
   <h2>Dashboard</h2>
   <b>Your Target:</b> {{target}} <br>
