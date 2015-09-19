@@ -47,8 +47,8 @@ if (Meteor.isClient) {
     });
 
 
-       Session.set(
-      }
+       //Session.set(
+      //}
   });
 }
 
