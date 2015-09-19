@@ -135,6 +135,16 @@ if (Meteor.isClient) {
         var killerInfo = Post.findOne({
           id: killerId
         });
+        Posts.update({
+            id: killerId
+        }, {
+              $set:{current_victim: userInfo.current_victim}
+        });
+        Posts.update({
+            id: userId
+        }, {
+             $set:{alive: false}
+        });
         console.log("email is trying to send");
         Email.send({
           "from": "assassins-master@mit.edu",
@@ -206,7 +216,7 @@ function load_sample_data() {
     email: "super_assassin@mit.edu",
     killerId: "Andres",
     gameID: "Sample",
-    status: "Dead",
+    alive: true,
     current_victim: "Jess",
     victim_list: []
   });
@@ -215,7 +225,7 @@ function load_sample_data() {
     email: "jessk@mit.edu",
     killerId: "Anna",
     gameID: "Sample",
-    status: "Dead",
+    alive: true,
     current_victim: "Andres",
     victim_list: []
   });
@@ -224,7 +234,7 @@ function load_sample_data() {
     email: "anpere@mit.edu",
     killerId: "Jess",
     gameID: "Sample",
-    status: "Dead",
+    alive: false,
     current_victim: "Anna",
     victim_list: []
   });
