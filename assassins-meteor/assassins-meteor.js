@@ -58,7 +58,7 @@ if (Meteor.isServer) {
     process.env.MAIL_URL = "smtp://outgoing.mit.edu:25/"
 
     console.log("sending email");
-    Email.send({
+    /*Email.send({
       "from": "assassins-master@mit.edu",
       "to": [
         "miles@milessteele.com"
@@ -66,8 +66,8 @@ if (Meteor.isServer) {
       "subject": "now it sends emails",
       "text": "exciting",
       "html": '<h1 style="color: blue; background: red">MORE EXCITING</h1><br><span style="font-size:6pt">I apologize for that.</style>'
-    });
-    console.log("email sent");
+    });*/
+    console.log("email not sent muahahah");
   });
 }
 
