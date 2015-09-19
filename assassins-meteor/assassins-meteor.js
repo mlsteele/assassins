@@ -73,19 +73,40 @@ Maybe we should sequester this somewhere else
 Games = new Mongo.Collection("games");
 Users = new Mongo.Collection("users");
 
-//sample user
-Users.insert({
-  id: "Anna",
-  email: "super_assassin@mit.edu",
-  killer: "Andres",
-  gameID: "Sample",
-  status: "Dead",
-  current_victim: "Jess",
-  victim_list: []
-});
+function load_sample_data() {
+  //sample user
+    Users.insert({
+    id: "Anna",
+    email: "super_assassin@mit.edu",
+    killer: "Andres",
+    gameID: "Sample",
+    status: "Dead",
+    current_victim: "Jess",
+    victim_list: []
+  });
+  Users.insert({
+    id: "Jess",
+    email: "jessk@mit.edu",
+    killer: "Anna",
+    gameID: "Sample",
+    status: "Dead",
+    current_victim: "Andres",
+    victim_list: []
+  });
+  Users.insert({
+    id: "Andres",
+    email: "anpere@mit.edu",
+    killer: "Jess",
+    gameID: "Sample",
+    status: "Dead",
+    current_victim: "Anna",
+    victim_list: []
+  });
 
-//sample game
-Games.insert({
-  id: "Sample",
-  mailing_list: "super_assassins@mit.edu"
-});
+  //sample game
+  Games.insert({
+    id: "Sample",
+    mailing_list: "super_assassins@mit.edu",
+    manager: "Jess"
+  });
+}

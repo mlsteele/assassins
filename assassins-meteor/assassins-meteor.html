@@ -55,6 +55,10 @@
 <template name="pregame">
   The game hasn't started yet. Here are the signed up players:
   {{> playerslist}}
+  {{#if manager}}
+    <button name="start-game">Start the game</button>
+    <button name="cancel-game">Cancel the game</button>
+  {{/if}}
 </template>
 
 <template name="playerslist">
