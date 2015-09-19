@@ -3,9 +3,21 @@
   {{> yield}}
 </template>
 
+<template name="home">
+  {{#if currentUser}}
+    {{#if gameRunning}}
+      {{> dashboard}}
+    {{else}}
+      {{> pregame}}
+    {{/if}}
+  {{else}}
+    {{> start}}
+  {{/if}}
+</template>
+
 <template name="start">
-  <a href="/create">Start a new game</a>
-  <a href="/join">Join a game</a>
+  <a href="{{pathFor route='create'}}">Start a new game</a>
+  <a href="{{pathFor route='join'}}">Join a game</a>
 </template>
 
 <template name="create">
@@ -23,4 +35,12 @@
     <input type="text" placeholder="name of game" name="name">
     <input type="submit" name="join-game" value="join">
   </form>
+</template>
+
+<template name="dashboard">
+  <h2>Dashboard</h2>
+</template>
+
+<template name="pregame">
+  The game hasn't started yet.
 </template>

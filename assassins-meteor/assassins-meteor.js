@@ -2,7 +2,7 @@ Router.configure({
     layoutTemplate: 'main'
 });
 Router.route('/', {
-    template: 'start'
+    template: 'home'
 });
 Router.route('/create', {
     template: 'create'
