@@ -303,7 +303,7 @@ function load_sample_data() {
   Games.insert({
     id: "Sample",
     mailingList: "super_assassins@mit.edu",
-    managerUserId: "#(*$&#*$"
+    managerUserId: "#(*$&#*$",
     started: false,
     finished: false
   });
