@@ -43,17 +43,18 @@ if (Meteor.isClient) {
     }
   });
 
-  /*
-  Template.inGame.events({
-      "I was killed": function() {
+  
+  Template.dashboard.events({
+      "I've been killed!": function() {
       // get user's victim and send it to the killer
           var userId = Meteor.userId();
-          var state = Posts.findOne({
+          var userInfo = Posts.findOne({
             id: userId
           });
+          var killerId = userInfo.killerId;
       }
   });
-  */
+  
 }
 
 if (Meteor.isServer) {
