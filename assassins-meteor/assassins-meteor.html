@@ -31,6 +31,9 @@
     <input type="email" placeholder="mailing list to invite" name="list">
     <input type="submit" name="create-game" value="Go!">
   </form>
+  {{#if error_message}}
+    <span>{{error_message}}</span>
+  {{/if}}
 </template>
 
 <template name="join">

@@ -22,7 +22,14 @@ Router.route('/pregame', {
 Router.route('/start', {
     template: 'start'
 });
+
 if (Meteor.isClient) {
+  Template.create.helpers({
+    error_message: function() {
+      return Session.get("create_error_message");
+    }
+  });
+
   Template.create.events({
     "submit form": function(event) {
       event.preventDefault();
@@ -33,17 +40,20 @@ if (Meteor.isClient) {
       });
 
       if (game) {
-        console.log("That already exists yo");
+        Session.set("create_error_message",
+                    "A game already exists with that name");
         return;
       }
 
       if (!game_id) {
-        console.log("For the love of god give a name.");
+        Session.set("create_error_message",
+                    "A game name is required.");
         return;
       }
 
       if (!mailing_list) {
-        console.log("provide a mailing list.")
+        Session.set("create_error_message",
+                    "A mailing list is required.");
         return;
       }
 
@@ -53,7 +63,7 @@ if (Meteor.isClient) {
         manager_id: "Jess" // TODO, no fair
       });
       Session.set("game_id", game_id);
-      console.log("Ok, diddly done.");
+      Session.set("create_error_message", undefined);
       Router.go("/");
     }
   });
