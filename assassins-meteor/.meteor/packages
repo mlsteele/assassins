@@ -9,3 +9,5 @@ autopublish
 insecure
 iron:router
 email
+accounts-ui
+accounts-password

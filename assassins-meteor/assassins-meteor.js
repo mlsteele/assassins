@@ -11,9 +11,6 @@ Router.route('/create', {
 Router.route('/join', {
     template: 'join'
 });
-Router.route('/login', {
-    template: 'login'
-});
 Router.route('/dashboard', {
     template: 'dashboard'
 });
@@ -158,26 +155,11 @@ if (Meteor.isClient) {
       }
   });
 
-  Template.login.events({
-    "submit form": function(event) {
-      event.preventDefault();
-      var user = Users.findOne({
-        "id": event.target.username.value
-      });
-      if (user) {
-        Session.set("currentUser", user)
-        Router.go('dashboard');
-      } else {
-        alert("User does not exist");
-      }
-    }
+  //against default signup, which asks for email  
+  Accounts.ui.config({
+    passwordSignupFields: "EMAIL_ONLY"
   });
 
-  Template.home.helpers({
-    currentUser: function() {
-      return Session.get("currentUser");
-    }
-  })
 }
 
 if (Meteor.isServer) {
@@ -223,15 +205,15 @@ if (Meteor.isServer) {
 
 
 /*
-Database Collections: Users and Games
+Database Collections: Players and Games
 Maybe we should sequester this somewhere else
 */
 Games = new Mongo.Collection("games");
-Users = new Mongo.Collection("users");
+Players = new Mongo.Collection("players");
 
 function load_sample_data() {
   //sample user
-    Users.insert({
+    Players.insert({
     id: "Anna",
     email: "super_assassin@mit.edu",
     killer_id: "Andres",
@@ -240,7 +222,7 @@ function load_sample_data() {
     current_victim: "Jess",
     victim_list: []
   });
-  Users.insert({
+  Players.insert({
     id: "Jess",
     email: "jessk@mit.edu",
     killerId: "Anna",
@@ -249,8 +231,18 @@ function load_sample_data() {
     current_victim: "Andres",
     victim_list: []
   });
-  Users.insert({
+  Players.insert({
     id: "Andres",
+    email: "anpere@mit.edu",
+    killerId: "Jess",
+    gameID: "Sample",
+    alive: false,
+    current_victim: "Miles",
+    victim_list: []
+  });
+
+  Players.insert({
+    id: "Miles",
     email: "anpere@mit.edu",
     killerId: "Jess",
     gameID: "Sample",
