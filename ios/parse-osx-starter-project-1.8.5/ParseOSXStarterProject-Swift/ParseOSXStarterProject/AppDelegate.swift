@@ -23,7 +23,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
         // ****************************************************************************
         // Uncomment and fill in with your Parse credentials:
-        [Parse setApplicationId:@"P3d9Sn9rmV91Exv8BLAQNUzSqxzcVadJNkecJHbr" clientKey:@"bMDyCWDUABxPcqxldL1axurcUI0UkBIyK0Foq5LI"];
+        [Parse setApplicationId:@"2fO5tL9EJyTk8FJKrCJzY5mr9lH9VI2T3cg3ZtHg" clientKey:@"Z8ukQzkYJjwp5Cpud0X2FYMAlFzRkLW56YPFfXze"];
         // ****************************************************************************
 
         PFUser.enableAutomaticUser()
