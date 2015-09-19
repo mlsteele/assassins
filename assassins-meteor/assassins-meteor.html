@@ -39,6 +39,9 @@
     <input type="text" placeholder="name of game" name="name">
     <input type="submit" name="join-game" value="join">
   </form>
+  {{#if bad_game_id}}
+    <span>No game named "{{bad_game_id}}"</span>
+  {{/if}}
 </template>
 
 <template name="dashboard">

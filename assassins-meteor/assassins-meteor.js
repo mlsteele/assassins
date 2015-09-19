@@ -20,16 +20,25 @@ Router.route('/start', {
     template: 'start'
 });
 if (Meteor.isClient) {
+  Template.join.helpers({
+    bad_game_id: function() {
+      return Session.get("bad_game_id");
+    }
+  });
+
   Template.join.events({
     "submit form": function(event) {
       event.preventDefault();
+      var game_id = event.target.name.value;
       var game = Games.findOne({
-        "id": event.target.name.value
+        "id": game_id
       });
+      console.log("Joining " + game_id);
       if (game) {
-        console.log("cool, dude");
+        Session.set("bad_game_id", undefined);
+        Session.set("game_id", game_id);
       } else {
-        console.log("no such game");
+        Session.set("bad_game_id", game_id);
       }
     }
   });
