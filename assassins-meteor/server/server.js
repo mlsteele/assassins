@@ -13,21 +13,6 @@ function shuffleArray(array) {
 
 Meteor.startup(function () {
   process.env.MAIL_URL = "smtp://outgoing.mit.edu:25/"
-
-  // DONT DO IT!
-  if (false) {
-    console.log("sending email");
-    Email.send({
-      "from": "assassins-master@mit.edu",
-      "to": [
-        "miles@milessteele.com"
-      ],
-      "subject": "now it sends emails",
-      "text": "exciting",
-      "html": '<h1 style="color: blue; background: red">MORE EXCITING</h1><br><span style="font-size:6pt">I apologize for that.</style>'
-    });
-    console.log("email sent");
-  }
 });
 
 Meteor.methods({
