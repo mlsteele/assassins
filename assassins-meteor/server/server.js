@@ -38,17 +38,10 @@ Meteor.methods({
       p1.currentVictim = p2.userId;
       p1.alive = true;
       p1.victimList = [];
-      user1 =Meteor.users.findOne({_id: p1.userId});
+      user1 = Meteor.users.findOne({_id: p1.userId});
+      user2 = Meteor.users.findOne({_id: p2.userId});
       console.log(user1.emails[0].address); 
-      Email.send({
-      "from": "assassins-master@mit.edu",
-      "to": [
-        user1.emails[0].address
-      ],
-      "subject": "now it sends",
-      "text": p1.currentVictim,
-      "html": '<h1 style="color: blue; background: red">MORE EXCITING</h1><br><span style="font-size:6pt">I apologize for that.</style>'
-      });
+      Meteor.assassinsEmails.nextTarget(user1.emails[0].address,user2.emails[0].address);
     }
     console.log("66");
     return {"status": "ok"};
