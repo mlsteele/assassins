@@ -152,10 +152,11 @@ Template.join.events({
     }
   }
 });
-Template.init.events({
-  "submit form": function(event) {
+Template.pregame.events({
+  "click .startButton": function(event) {
     event.preventDefault();
-    var gameId = event.target.name.value;
+    var gameId = currentGameId();
+    console.log("push startButton");
     Meteor.call('initializeGame',gameId, function (error, result) {
       console.log("error",error);
       console.log("result", result);

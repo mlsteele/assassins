@@ -38,9 +38,10 @@ Meteor.methods({
       console.log("Not a game!")
       return {"status": "failed", "error": "No such game."};
     }
-
+    console.log("41");
     var players = Players.find({"gameId": gameId}).fetch();
     players = shuffleArray(players);
+    console.log("44");
     for (var i = 0; i < players.length; i++) {
       var p1 = players[i];
       var p2 = players[(i + 1) % players.length];
