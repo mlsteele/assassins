@@ -160,8 +160,9 @@ Template.init.events({
     });
     Meteor.call('initializeGame',gameId, function (error,result) {
         if (error) {
-            console.error(error)
+            console.error(error);
         } else {
+            console.log("initialized game");
             Router.go("/");
         }
     });
