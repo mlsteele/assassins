@@ -224,7 +224,7 @@ Template.pregame.events({
     event.preventDefault();
     var gameId = getCurrentGameId();
     var game = Games.findOne({
-        "_id":gameId
+        "id":gameId
     });
     Meteor.call('cancelGame', gameId, function(error,result) {
         if (error) {
@@ -233,6 +233,7 @@ Template.pregame.events({
         }
     });
     console.log("pushed cancelButton");
+    setCurrentPlayerId(undefined);
   },
   "click #leavePregame": function(event) {
       event.preventDefault();
@@ -323,7 +324,6 @@ Template.canceled.helpers({
 });
 Template.canceled.events({
   "click .leaveGame": function() {
-  setCurrentPlayerId(undefined);
   console.log("playerId set to undefined");
   }
 });
