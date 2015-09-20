@@ -268,7 +268,15 @@ Template.playerslist.helpers({
     }
 });
 
-
+Template.dashboard.helpers({
+    target: function() {
+        var player = getCurrentPlayer();
+        var targetId = player.currentVictim;
+        var targetPlayer = Players.findOne({_id: targetId});
+        var targetUser = Meteor.users.findOne({_id: targetPlayer.userId});
+        return targetUser.profile.name;
+    }
+});
 Template.dashboard.events({
     "click .die": function() {
       // get player's victim and send it to the killer
