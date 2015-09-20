@@ -25,8 +25,14 @@
 </template>
 
 <template name="nogame">
-  <a class="nogame-link" href="{{pathFor route='join'}}">Join a game</a>
-  <a class="nogame-link" href="{{pathFor route='create'}}">Create a new game</a>
+  <button class="nogame-link nogame-join">Join a game</button>
+  <button class="nogame-link nogame-create">Create a new game</button>
+  {{#if joining}}
+    {{> join}}
+  {{/if}}
+  {{#if creating}}
+    {{> create}}
+  {{/if}}
 </template>
 
 <template name="create">

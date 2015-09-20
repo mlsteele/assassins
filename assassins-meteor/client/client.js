@@ -94,6 +94,26 @@ Template.home.helpers({
   }
 });
 
+Template.nogame.helpers({
+  joining: function() {
+    return Session.get("nogameAction") === "join";
+  },
+  creating: function() {
+    return Session.get("nogameAction") === "create";
+  }
+});
+
+Template.nogame.events({
+  "click button.nogame-join": function(event) {
+    event.preventDefault();
+    Session.set("nogameAction", "join");
+  },
+  "click button.nogame-create": function(event) {
+    event.preventDefault();
+    Session.set("nogameAction", "create");
+  }
+});
+
 Template.create.helpers({
   errorMessage: function() {
     return Session.get("createErrorMessage");
@@ -224,6 +244,7 @@ Template.pregame.helpers({
       return Players.find({gameId: getCurrentGameId()}).fetch().length;
     }
 });
+
 Template.playerslist.helpers({
     players: function() {
       if (!getCurrentGameId()) {
