@@ -25,6 +25,11 @@ function joinGame(gameId) {
     gameId: gameId,
     userId: Meteor.userId()
   });
+  var game = Games.findOne({id: gameId});
+  if (game && (game.started == true || game.finished == true)) {
+    console.err("Cannot start a game that already started");
+    return;
+  }
 
   if (player) {
     setCurrentPlayerId(player._id);
@@ -143,7 +148,7 @@ Template.join.events({
     var game = Games.findOne({
       "id": gameId
     });
-    if (game) {
+    if (game && !game.started && !game.finished) {
       Session.set("badGameId", undefined);
       joinGame(gameId);
       Router.go("/");
