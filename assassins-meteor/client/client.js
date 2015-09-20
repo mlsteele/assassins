@@ -91,6 +91,13 @@ Template.home.helpers({
     var game = Games.findOne({id: gameId});
     if (game == undefined) return false;
     return game.started && !game.finished;
+  },
+  gameCanceled: function() {
+    var gameId = getCurrentGameId();
+    if (gameId == undefined) return false;
+    var game = Games.findOne({id: gameId});
+    if (game== undefined) return false;
+    return game.started && game.finished;
   }
 });
 
