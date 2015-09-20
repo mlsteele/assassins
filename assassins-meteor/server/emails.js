@@ -25,6 +25,21 @@ Meteor.assassinsEmails.invitation = function(to_email, game_name) {
   });
 }
 
+Meteor.assassinsEmails.cancelled = function(to_users, game_name) {
+  // This game has been cancelled.
+  var emails = to_users.map(function(user) {
+    return user.emails[0].address;
+  });
+
+  Email.send({
+    "from": "assassins-master@mit.edu",
+    "to": emails
+    "subject": Meteor.assassinsEmails.prefix + "Game cancelled.",
+    "text":
+      "The game '"+game_name+"' has been cancelled."
+  });
+}
+
 Meteor.assassinsEmails.gameStarted = function(to_user, game_name, target_user) {
   // You have been invited to a game of assassins.
   // Here is your first targetd.
