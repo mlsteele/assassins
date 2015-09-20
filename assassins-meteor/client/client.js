@@ -184,10 +184,11 @@ Template.playerslist.helpers({
       var players = Players.find({gameId: currentGameId()});
       var managerUserId = Games.findOne({id: currentGameId()}).managerUserId;
       return players.map(function(player) {
-          return {
-              name: Meteor.users.findOne({_id: player.userId}).profile.name,
-              manager: managerUserId == player.userId
-          }
+        var user = Meteor.users.findOne({_id: player.userId})
+        return {
+          name: user.profile.name,
+          manager: managerUserId == player.userId
+        }
       });
     }
 });
