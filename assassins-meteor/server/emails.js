@@ -33,7 +33,7 @@ Meteor.assassinsEmails.cancelled = function(to_users, game_name) {
 
   Email.send({
     "from": "assassins-master@mit.edu",
-    "to": emails
+    "to": emails,
     "subject": Meteor.assassinsEmails.prefix + "Game cancelled.",
     "text":
       "The game '"+game_name+"' has been cancelled."
