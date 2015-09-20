@@ -24,6 +24,8 @@
   {{#if currentUser}}
     <a class="start-link" href="{{pathFor route='create'}}">Create a new game</a>
     <a class="start-link" href="{{pathFor route='join'}}">Join a game</a>
+  {{else}}
+    Please log in first.
   {{/if}}
 </template>
 
