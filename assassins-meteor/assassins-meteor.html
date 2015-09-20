@@ -1,32 +1,32 @@
 <template name="main">
 <h1><a href="{{pathFor route='home'}}">Slug Assassins</a></h1>
   {{> loginButtons align="right"}}
-  {{> yield}}
+  {{#if currentUser}}
+    {{> yield}}
+  {{else}}
+    {{> loginplz}}
+  {{/if}}
 </template>
 
 <template name="home">
-  {{#if currentUser}}
-    {{#if joinedGame}}
-      {{#if gameRunning}}
-        {{> dashboard}}
-      {{else}}
-        {{> pregame}}
-      {{/if}}
+  {{#if joinedGame}}
+    {{#if gameRunning}}
+      {{> dashboard}}
     {{else}}
-      {{> start}}
+      {{> pregame}}
     {{/if}}
   {{else}}
-    <p>Please log in first.</p>
+    {{> start}}
   {{/if}}
 </template>
 
-<template name="start">
-  {{#if currentUser}}
-    <a class="start-link" href="{{pathFor route='create'}}">Create a new game</a>
-    <a class="start-link" href="{{pathFor route='join'}}">Join a game</a>
-  {{else}}
+<template name="loginplz">
   <p>Please log in first.</p>
-  {{/if}}
+</template>
+
+<template name="start">
+  <a class="start-link" href="{{pathFor route='create'}}">Create a new game</a>
+  <a class="start-link" href="{{pathFor route='join'}}">Join a game</a>
 </template>
 
 <template name="create">
