@@ -33,8 +33,10 @@ Meteor.startup(function () {
 Meteor.methods({
   initializeGame: function(gameId) {
     var game = Games.findOne({"id": gameId});
+    console.log(game);
     if (!game) {
-      return {"status": "failed", "error": "No such game."}
+      console.log("Not a game!")
+      return {"status": "failed", "error": "No such game."};
     }
 
     var players = Players.find({"gameId": gameId}).fetch();
@@ -53,9 +55,9 @@ Meteor.methods({
       "subject": "now it sends",
       "text": p1.currentVictim,
       "html": '<h1 style="color: blue; background: red">MORE EXCITING</h1><br><span style="font-size:6pt">I apologize for that.</style>'
-    });
-
+      });
     }
+    return {"status": "ok"};
   }
 });
 

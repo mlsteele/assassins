@@ -154,14 +154,18 @@ Template.join.events({
 });
 Template.init.events({
   "submit form": function(event) {
+    event.preventDefault();
     var gameId = event.target.name.value;
-    Meteor.call('initializeGame',gameId, function (error,result) {
-        if (error) {
-            console.error(error);
-        } else {
-            console.log("initialized game");
-            Router.go("/");
-        }
+    Meteor.call('initializeGame',gameId, function (error, result) {
+      console.log("error",error);
+      console.log("result", result);
+      if (error || result.status=="failed") {
+        console.error(error || result.error);
+      } else {
+        console.log("initialized game");
+        console.log(gameId);
+        Router.go("/");
+      }
     });
   }
 });
