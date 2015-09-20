@@ -233,6 +233,11 @@ Template.pregame.events({
         }
     });
     console.log("pushed cancelButton");
+  },
+  "click #leavePregame": function(event) {
+      event.preventDefault();
+      Players.remove({_id: getCurrentPlayer()._id});
+      setCurrentPlayerId(undefined);
   }
 });
 Template.pregame.helpers({
