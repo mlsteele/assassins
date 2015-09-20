@@ -280,38 +280,31 @@ Template.dashboard.helpers({
 Template.dashboard.events({
     "click .die": function() {
       // get player's victim and send it to the killer
-      var userId = Meteor.user()._id;
-      getCurrentGameId = getCurrentGameId();
-      var player = Players.findOne({
-        gameId: getCurrentGameId,
-        userId: userId
-      });
+      var player = getCurrentPlayer();
       var killer = Players.findOne({
-          gameId: getCurrentGameId,
+          gameId: getCurrentGameId(),
           currentVictim: player._id
       });
       if (killer) {
         Players.update({
-          userId: killer.userId
+            _id: killer._id
         }, {
             $set: {currentVictim: player.currentVictim}
         });
+        Meteor.call('newTarget', killer, function(error,result) {
+          if (error) {
+            console.error(error);
+          }
+        });
+      } else {
+          console.error("Unexpected no killer for player ", player);
       }
       Players.update({
-          userId: userId
+          _id: player._id
       }, {
            $set: {alive: false}
       });
-      console.log("email is trying to send");
-      Email.send({
-        "from": "assassins-master@mit.edu",
-        "to": [
-          killerInfo.email
-         ],
-        "subject": "your target is",
-        "text": killerInfo.currentVictim,
-        "html": '<h1 style="color: blue; background: red">MORE EXCITING</h1><br><span style="font-size:6pt">I apologize for that.</style>'
-      });
+
     },
 
     "click .guess": function() {

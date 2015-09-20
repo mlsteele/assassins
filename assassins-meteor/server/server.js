@@ -26,12 +26,8 @@ Meteor.methods({
     console.log("41");
     var players = Players.find({"gameId": gameId}).fetch();
     players = shuffleArray(players);
-    console.log("44");
-    Games.update( {
-      id: gameId
-    }, {
-      $set: { started: true, finished:false}
-    });
+    console.log("Shuffled players:" , players);
+
     for (var i = 0; i < players.length; i++) {
       var p1 = players[i];
       var p2 = players[(i + 1) % players.length];
@@ -45,15 +41,19 @@ Meteor.methods({
       console.log(user1.emails[0].address);
       Meteor.assassinsEmails.gameStarted(user1,gameId,user2);
     }
-    console.log("66");
+    Games.update( {
+      id: gameId
+    }, {
+      $set: { started: true, finished:false}
+    });
     return {"status": "ok"};
   },
   cancelGame: function(gameId) {
     var game = Games.findOne({"id": gameId});
     Games.update( {
-      id: gameId  
+      id: gameId
     }, {
-        $set: {finished: true} 
+        $set: {finished: true}
     });
     if (game.started){
       //TODO send Email saying that running game has been canceled
@@ -67,6 +67,14 @@ Meteor.methods({
   createGame: function(mailingList, gameId) {
     Meteor.assassinsEmails.invitation(mailingList,gameId);
     console.log("sent email to", mailingList);
+    return "something";
+  },
+  newTarget: function(killerPlayer) {
+    var newTargetPlayer = Players.findOne({_id: killerPlayer.currentVictim});
+    Meteor.assassinsEmails.nextTarget(
+        Meteor.users.findOne({_id: killerPlayer.userId}),
+        Meteor.users.findOne({_id: newTargetPlayer.userId})
+    );
     return "something";
   }
 });
