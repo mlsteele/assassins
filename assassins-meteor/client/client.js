@@ -155,9 +155,6 @@ Template.join.events({
 Template.init.events({
   "submit form": function(event) {
     var gameId = event.target.name.value;
-    var game = Games.findOne({
-      id: gameId
-    });
     Meteor.call('initializeGame',gameId, function (error,result) {
         if (error) {
             console.error(error);
