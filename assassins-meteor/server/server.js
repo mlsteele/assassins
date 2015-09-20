@@ -42,6 +42,11 @@ Meteor.methods({
     var players = Players.find({"gameId": gameId}).fetch();
     players = shuffleArray(players);
     console.log("44");
+    Games.update( {
+      id: gameId
+    }, {
+      $set: { started: true }
+    });
     for (var i = 0; i < players.length; i++) {
       var p1 = players[i];
       var p2 = players[(i + 1) % players.length];
@@ -59,7 +64,7 @@ Meteor.methods({
       });
     }
     return {"status": "ok"};
-  }
+  },
   cancelGame: function(gameId) {
     var game = Games.findOne({"id": gameId});
     Games.update( {
@@ -67,6 +72,15 @@ Meteor.methods({
     }, {
         $set: {finished: true} 
     });
+    if (game.started){
+      //TODO send Email saying that running game has been canceled
+      console.log("running game canceled");
+    } else {
+      //TODO send Email saying the game has been canceled before it started
+      console.log("game never began");
+    }
+    return "something";
+
   }
 });
 

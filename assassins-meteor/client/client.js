@@ -175,11 +175,12 @@ Template.pregame.events({
     var game = Games.findOne({
         "id":gameId
     });
-        if (game.started){
-      //TODO send Email saying that running game has been canceled
-    } else {
-      //TODO send Email saying the game has been canceled before it started
-    }
+    Meteor.call('cancelGame', gameId, function(error,result) {
+        if (error) {
+            // handle error
+        } else {
+        }
+    });
     console.log("pushed cancelButton");
   }
 });
