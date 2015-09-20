@@ -167,13 +167,13 @@ Template.create.events({
     });
 
     Session.set("createErrorMessage", undefined);
+
     joinGame(gameId);
-    Meteor.call("createGame",mailingList,gameId, function(error,result) {
-        if (error) {
-            // handle error
-        } else {
-            Router.go("/");
-        }
+
+    Meteor.call("createGame", mailingList, gameId, function(error,result) {
+      if (error) {
+        console.error(error);
+      }
     });
   }
 });
@@ -198,7 +198,6 @@ Template.join.events({
     if (game && !game.started && !game.finished) {
       Session.set("badGameId", undefined);
       joinGame(gameId);
-      Router.go("/");
     } else {
       Session.set("badGameId", gameId);
     }
@@ -213,12 +212,11 @@ Template.pregame.events({
       console.log("error",error);
       console.log("result", result);
       if (error) {
-        // console.error(error || result.error);
+        console.error(error || result.error);
       } else {
         // console.log("initialized game");
         // console.log(gameId);
         console.log('bye-bye');
-        Router.go("/");
       }
     });
   },

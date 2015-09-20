@@ -76,7 +76,7 @@
     <p><button name="die" class="die">I've been killed!</button></p>
     <p>Players:</p>
     {{> playerslist}}
-    <p><button name="guess" class="guess"> Guess </button></p>
+    <p><button name="guess" class="guess">Guess</button></p>
   {{else}}
     <p>Please log in first.</p>
   {{/if}}
@@ -128,6 +128,6 @@
     <textarea class="newClue" rows="3" cols="50"> </textarea> <br>
     <button class="submitClue"> Add Clue </button> <br> <br>
   {{else}}
-    <p>Please log in first.</p>
+    {{> loginplz}}
   {{/if}}
 </template>
