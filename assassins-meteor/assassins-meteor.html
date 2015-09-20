@@ -16,7 +16,7 @@
       {{> pregame}}
     {{/if}}
   {{else}}
-    {{> start}}
+    {{> nogame}}
   {{/if}}
 </template>
 
@@ -24,9 +24,9 @@
   <p>Please log in first.</p>
 </template>
 
-<template name="start">
-  <a class="start-link" href="{{pathFor route='create'}}">Create a new game</a>
-  <a class="start-link" href="{{pathFor route='join'}}">Join a game</a>
+<template name="nogame">
+  <a class="nogame-link" href="{{pathFor route='join'}}">Join a game</a>
+  <a class="nogame-link" href="{{pathFor route='create'}}">Create a new game</a>
 </template>
 
 <template name="create">
