@@ -316,6 +316,12 @@ Template.canceled.helpers({
     return Games.findOne({id: getCurrentGameId()}).id
     }
 });
+Template.canceled.events({
+  "click .leaveGame": function() {
+  setCurrentPlayerId(undefined);
+  console.log("playerId set to undefined");
+  }
+});
 //against default signup, which asks for email
 Accounts.ui.config({
   passwordSignupFields: "EMAIL_ONLY"
