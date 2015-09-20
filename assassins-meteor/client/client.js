@@ -160,11 +160,11 @@ Template.pregame.events({
     Meteor.call('initializeGame',gameId, function (error, result) {
       console.log("error",error);
       console.log("result", result);
-      if (error || result.status=="failed") {
-        console.error(error || result.error);
+      if (error) {
+        // console.error(error || result.error);
       } else {
-        console.log("initialized game");
-        console.log(gameId);
+        // console.log("initialized game");
+        // console.log(gameId);
         Router.go("/");
       }
     });

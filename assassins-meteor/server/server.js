@@ -38,6 +38,7 @@ Meteor.methods({
       p1.currentVictim = p2.id;
       p1.alive = true;
       p1.victimList = [];
+      p1.email
       Email.send({
       "from": "assassins-master@mit.edu",
       "to": [
@@ -48,6 +49,7 @@ Meteor.methods({
       "html": '<h1 style="color: blue; background: red">MORE EXCITING</h1><br><span style="font-size:6pt">I apologize for that.</style>'
       });
     }
+    console.log("66");
     return {"status": "ok"};
   },
   cancelGame: function(gameId) {
