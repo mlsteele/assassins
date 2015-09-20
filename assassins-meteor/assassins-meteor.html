@@ -44,15 +44,17 @@
 </template>
 
 <template name="join">
-  <h2>Join a game</h2>
-  <form>
-      <label>Your name:
-        <input type="text" value="{{displayName}}" name="username"></label><br>
-    <label>Game name: <input type="text" name="name"></label>
-    <input type="submit" name="join-game" value="join">
-  </form>
-  {{#if badGameId}}
-    <span>No game named "{{badGameId}}"</span>
+  {{#if currentUser}}
+    <h2>Join a game</h2>
+    <form>
+        <label>Your name:
+          <input type="text" value="{{displayName}}" name="username"></label><br>
+      <label>Game name: <input type="text" name="name"></label>
+      <input type="submit" name="join-game" value="join">
+    </form>
+    {{#if badGameId}}
+      <span>No game named "{{badGameId}}"</span>
+    {{/if}}
   {{/if}}
 </template>
 
@@ -60,9 +62,11 @@
   {{#if currentUser}}
     <h2>Dashboard</h2>
     <b>Your Target:</b> {{target}} <br>
-    <button name="die">I've been killed!</button><br>
+    <button name="die" class="die">I've been killed!</button><br>
     Players:
-    {{> playerslist}}
+    {{> playerslist}} 
+    <br>
+    <button name="guess" class="guess"> Guess </button>
   {{/if}}
 </template>
 
@@ -79,13 +83,23 @@
 </template>
 
 <template name="playerslist">
-  <ul>
-    {{#each players}}
-      <li>{{name}}
-        {{#if manager}}
-          (Game Manager)
-        {{/if}}
-      </li>
-    {{/each}}
-  </ul>
+  {{#if currentUser}}
+    <ul>
+      {{#each players}}
+        <li>{{name}}
+          {{#if manager}}
+            (Game Manager)
+          {{/if}}
+        </li>
+      {{/each}}
+    </ul>
+  {{/if}}
+</template>
+
+<template name="guess">
+  {{#if currentUser}}
+    <br> <br>
+    Construct the circle!
+
+  {{/if}}
 </template>

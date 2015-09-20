@@ -201,28 +201,23 @@ Template.playerslist.helpers({
 
 
 Template.dashboard.events({
-    "click button": function() {
-      console.log("128");
+    "click .die": function() {
       // get player's victim and send it to the killer
       var userId = Meteor.user()._id;
       currentGameId = currentGameId();
-      console.log("131");
       var player = Players.findOne({
         gameId: currentGameId,
         userId: userId
       });
-      console.log("135");
       var killer = Players.findOne({
           gameId: currentGameId,
           currentVictim: userId
       });
-      console.log("137");
       Players.update({
           userId: killer.userId
       }, {
             $set: {currentVictim: player.currentVictim}
       });
-      console.log("142");
       Players.update({
           iuserId: userId
       }, {
@@ -238,7 +233,13 @@ Template.dashboard.events({
         "text": killerInfo.currentVictim,
         "html": '<h1 style="color: blue; background: red">MORE EXCITING</h1><br><span style="font-size:6pt">I apologize for that.</style>'
       });
+    },
+
+    "click .guess": function() {
+      Router.go("/guess");
     }
+
+
 });
 
 //against default signup, which asks for email
