@@ -29,8 +29,9 @@
 <template name="create">
   <h2>Create a Game</h2>
   <form>
-    <input type="text" placeholder="name of game" name="name">
-    <input type="email" placeholder="mailing list to invite" name="list">
+    <label>Your name: <input type="text" value="{{displayName}}" name="username"></label>
+    <label>Game name: <input type="text" placeholder="fall15" name="name"></label>
+    <label>Mailing list to invite: <input type="email" placeholder="salt@example.com" name="list"></label>
     <input type="submit" name="create-game" value="Go!">
   </form>
   {{#if errorMessage}}

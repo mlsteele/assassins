@@ -27,6 +27,16 @@ function setCurrentUserName(name) {
         {$set: {'profile.name': name}});
 }
 
+function getCurrentUserName() {
+    if (Meteor.user()) {
+        if (Meteor.user().profile && Meteor.user().profile.name) {
+            return Meteor.user().profile.name;
+        } else {
+            return Meteor.user().emails[0].address.split("@")[0];
+        }
+    }
+}
+
 /**** Client Code****/
 
 
@@ -43,12 +53,16 @@ Template.home.helpers({
 Template.create.helpers({
   errorMessage: function() {
     return Session.get("createErrorMessage");
+  },
+  displayName: function() {
+    return getCurrentUserName();
   }
 });
 
 Template.create.events({
   "submit form": function(event) {
     event.preventDefault();
+    setCurrentUserName(event.target.username.value);
     var gameId = event.target.name.value;
     var mailingList = event.target.list.value;
     var game = Games.findOne({
@@ -101,13 +115,7 @@ Template.join.helpers({
     return Session.get("badGameId");
   },
   displayName: function() {
-    if (Meteor.user()) {
-      if (Meteor.user().profile && Meteor.user().profile.name) {
-        return Meteor.user().profile.name;
-      } else {
-        return Meteor.user().emails[0].address.split("@")[0];
-      }
-    }
+    return getCurrentUserName();
   }
 });
 
