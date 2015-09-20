@@ -49,12 +49,14 @@ Meteor.methods({
     return {"status": "ok"};
   },
   cancelGame: function(gameId) {
+    console.log(gameId);
     var game = Games.findOne({"id": gameId});
     Games.update( {
       id: gameId
     }, {
         $set: {finished: true}
     });
+    console.log(game);
     if (game.started){
       //TODO send Email saying that running game has been canceled
       console.log("running game canceled");

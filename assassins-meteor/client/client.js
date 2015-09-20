@@ -90,14 +90,16 @@ Template.home.helpers({
     if (gameId == undefined) return false;
     var game = Games.findOne({id: gameId});
     if (game == undefined) return false;
+    console.log("game started",game.started);
+    console.log("game finished",game.finished);
     return game.started && !game.finished;
   },
-  gameCanceled: function() {
+  gameFinished: function() {
     var gameId = getCurrentGameId();
     if (gameId == undefined) return false;
     var game = Games.findOne({id: gameId});
     if (game== undefined) return false;
-    return !game.started && game.finished;
+    return game.finished;
   }
 });
 
@@ -220,9 +222,13 @@ Template.pregame.events({
       }
     });
   },
+  // THIS HERE IS SO BROKEN DON"T EVEN TRY USING IT
+  // DON"T FORGET TO FIX IT. IT DOESN"T UPDATE THE GAME
+  // STATUS TO FINISHED ON THE CLIENT SIDE -- ANPERE
   "click .cancelButton": function(event) {
     event.preventDefault();
     var gameId = getCurrentGameId();
+    var player = getCurrentPlayer();
     var game = Games.findOne({
         "id":gameId
     });
@@ -231,14 +237,21 @@ Template.pregame.events({
             // handle error
         } else {
         }
+    console.log(game);
     });
     console.log("pushed cancelButton");
-    setCurrentPlayerId(undefined);
+    Games.update({
+            _id: game._id
+        }, {
+            $set: {finished: true}
+        });
+    Players.update({_id: player._id}, { $set: {gameId: undefined}});
   },
   "click #leavePregame": function(event) {
       event.preventDefault();
       Players.remove({_id: getCurrentPlayer()._id});
       setCurrentPlayerId(undefined);
+      //TODO fix set is empty error
   }
 });
 Template.pregame.helpers({
