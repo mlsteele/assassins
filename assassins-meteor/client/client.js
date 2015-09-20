@@ -234,7 +234,7 @@ Template.dashboard.events({
       });
       var killer = Players.findOne({
           gameId: getCurrentGameId,
-          currentVictim: userId
+          currentVictim: player._id
       });
       Players.update({
           userId: killer.userId
@@ -242,7 +242,7 @@ Template.dashboard.events({
             $set: {currentVictim: player.currentVictim}
       });
       Players.update({
-          iuserId: userId
+          userId: userId
       }, {
            $set: {alive: false}
       });
