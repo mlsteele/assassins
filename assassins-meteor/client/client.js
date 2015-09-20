@@ -18,6 +18,15 @@ function setCurrentPlayerId(id) {
         {$set: {'profile.currentPlayerId': id}});
 }
 
+function setCurrentUserName(name) {
+    if (!Meteor.user()) {
+        console.error("Setting user name before user is loaded");
+        return undefined;
+    }
+    Meteor.users.update({_id: Meteor.user()._id},
+        {$set: {'profile.name': name}});
+}
+
 /**** Client Code****/
 
 
@@ -90,12 +99,22 @@ Template.create.events({
 Template.join.helpers({
   badGameId: function() {
     return Session.get("badGameId");
+  },
+  displayName: function() {
+    if (Meteor.user()) {
+      if (Meteor.user().profile && Meteor.user().profile.name) {
+        return Meteor.user().profile.name;
+      } else {
+        return Meteor.user().emails[0].address.split("@")[0];
+      }
+    }
   }
 });
 
 Template.join.events({
   "submit form": function(event) {
     event.preventDefault();
+    setCurrentUserName(event.target.username.value);
     var gameId = event.target.name.value;
     var game = Games.findOne({
       "id": gameId
@@ -142,7 +161,7 @@ Template.playerslist.helpers({
       var managerUserId = Games.findOne({id: currentGameId()}).managerUserId;
       return players.map(function(player) {
           return {
-              name: Meteor.users.findOne({_id: player.userId}),
+              name: Meteor.users.findOne({_id: player.userId}).profile.name,
               manager: managerUserId == player.userId
           }
       });

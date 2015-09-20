@@ -41,7 +41,9 @@
 <template name="join">
   <h2>Join a game</h2>
   <form>
-    <input type="text" placeholder="name of game" name="name">
+      <label>Your name:
+        <input type="text" value="{{displayName}}" name="username"></label><br>
+    <label>Game name: <input type="text" name="name"></label>
     <input type="submit" name="join-game" value="join">
   </form>
   {{#if badGameId}}
