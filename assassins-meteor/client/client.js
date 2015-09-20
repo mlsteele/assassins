@@ -18,6 +18,31 @@ function setCurrentPlayerId(id) {
         {$set: {'profile.currentPlayerId': id}});
 }
 
+// Set the users active game.
+function joinGame(gameId) {
+  // Use an existing player if one exists.
+  var player = Players.findOne({
+    gameId: gameId,
+    userId: Meteor.userId()
+  });
+
+  if (player) {
+    setCurrentPlayerId(player._id);
+  } else {
+    // Create a Player if there isn't one.
+    Players.insert({
+      gameId: gameId,
+      userId: Meteor.user()._id
+    }, function(err, playerId) {
+      if (err) {
+        console.error(err);
+      } else {
+        setCurrentPlayerId(playerId);
+      }
+    });
+  }
+}
+
 function setCurrentUserName(name) {
     if (!Meteor.user()) {
         console.error("Setting user name before user is loaded");
@@ -94,19 +119,10 @@ Template.create.events({
       started: false,
       finished: false
     });
-    Players.insert({
-      gameId: gameId,
-      userId: Meteor.user()._id
-    }, function(err, playerId) {
-      if (err) {
-        console.error(err);
-        Session.set("createErrorMessage", err);
-      } else {
-        setCurrentPlayerId(playerId);
-        Router.go("/");
-      }
 
-    });
+    Session.set("createErrorMessage", undefined);
+    joinGame(gameId);
+    Router.go("/");
   }
 });
 
@@ -129,7 +145,7 @@ Template.join.events({
     });
     if (game) {
       Session.set("badGameId", undefined);
-      Session.set("gameId", gameId);
+      joinGame(gameId);
       Router.go("/");
     } else {
       Session.set("badGameId", gameId);
