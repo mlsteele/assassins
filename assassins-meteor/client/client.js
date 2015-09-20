@@ -138,7 +138,13 @@ Template.create.events({
 
     Session.set("createErrorMessage", undefined);
     joinGame(gameId);
-    Router.go("/");
+    Meteor.call("createGame",mailingList,gameId, function(error,result) {
+        if (error) {
+            // handle error
+        } else {
+            Router.go("/");
+        }
+    });
   }
 });
 

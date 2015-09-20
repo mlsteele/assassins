@@ -61,7 +61,11 @@ Meteor.methods({
       console.log("game never began");
     }
     return "something";
-
+  },
+  createGame: function(mailingList, gameId) {
+    Meteor.assassinsEmails.invitation(mailingList,gameId);
+    console.log("sent email to", mailingList);
+    return "something";
   }
 });
 
