@@ -1,1 +1,78 @@
-/* CSS declarations go here */
+@import url(https://fonts.googleapis.com/css?family=Trade+Winds);
+@import url(https://fonts.googleapis.com/css?family=Roboto:400,700);
+body {
+    font-family: 'Helvetica Nueue', Roboto, sans-serif;
+    margin: 0; padding: 0;
+    position: relative;
+    background: #edf4dc;
+    color: #210000;
+}
+
+h1 {
+    /*background: #333;
+    color: white;*/
+    background: #A8C764;
+    /*background: -webkit-linear-gradient(top, #A8C764, #375000);*/
+    margin: 0;
+    padding: 15px 20px;
+    margin-bottom: 20px;
+    font-family: 'Trade Winds';
+    font-weight: normal;
+    font-size: 2.2em;
+    text-shadow: 2px 2px 2px #D6EF9F;
+}
+h1 a:link, h1 a:visited {
+    color: #540004;
+    text-decoration: none;
+}
+h2 {
+    padding-left: 20px;
+}
+p {
+    margin-left: 20px
+}
+#login-buttons {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    color: #7D151A;
+}
+
+.start-link {
+    display: inline-block;
+    padding: 15px;
+    margin: 5px;
+    border-radius: 10px 0 10px 0;
+    max-width: 200px;
+    background-color: #82B7B3;
+    color: #003430;
+    border: solid 1px #003430;
+    text-align: center;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1.2em;
+    text-shadow: 1px 1px 1px white;
+}
+
+#create-game, #join-game {
+    padding: 0 20px;
+}
+#create-game label, #join-game label {
+    display: block;
+    margin: 10px 0;
+}
+input[type=text], input[type=email] {
+    border: solid 1px #375000;
+    border-radius: 8px 0 8px 0;
+    padding: 3px;
+    background-color: #FFF4F8;
+}
+input[type=submit], button {
+    background: #236863;
+    color: #E7FFFF;
+    text-shadow: 1px 1px 1px black;
+    border: 2px solid #003430;
+    padding: 4px 8px;
+    font-size: 1em;
+    border-radius: 8px 0 8px 0;
+}

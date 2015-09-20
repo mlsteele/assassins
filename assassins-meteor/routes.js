@@ -3,7 +3,7 @@ Router.configure({
     layoutTemplate: 'main'
 });
 Router.route('/', {
-    template: 'home'
+    name: 'home'
 });
 Router.route('/create', {
     template: 'create'

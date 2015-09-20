@@ -1,6 +1,6 @@
 <template name="main">
-  <h1>Slug Assassins</h1>
-  {{> loginButtons}}
+<h1><a href="{{pathFor route='home'}}">Slug Assassins</a></h1>
+  {{> loginButtons align="right"}}
   {{> yield}}
 </template>
 
@@ -22,8 +22,8 @@
 
 <template name="start">
   {{#if currentUser}}
-    <a href="{{pathFor route='create'}}">Create a new game</a>
-    <a href="{{pathFor route='join'}}">Join a game</a>
+    <a class="start-link" href="{{pathFor route='create'}}">Create a new game</a>
+    <a class="start-link" href="{{pathFor route='join'}}">Join a game</a>
     <a href="{{pathFor route= 'init'}}">Start a game</a>
   {{/if}}
 </template>
@@ -31,7 +31,7 @@
 <template name="create">
   {{#if currentUser}}
     <h2>Create a Game</h2>
-    <form>
+    <form id="create-game">
       <label>Your name: <input type="text" value="{{displayName}}" name="username"></label>
       <label>Game name: <input type="text" placeholder="fall15" name="name"></label>
       <label>Mailing list to invite: <input type="email" placeholder="salt@example.com" name="list"></label>
@@ -46,9 +46,9 @@
 <template name="join">
   {{#if currentUser}}
     <h2>Join a game</h2>
-    <form>
+    <form id="join-game">
         <label>Your name:
-          <input type="text" value="{{displayName}}" name="username"></label><br>
+          <input type="text" value="{{displayName}}" name="username"></label>
       <label>Game name: <input type="text" name="name"></label>
       <input type="submit" name="join-game" value="join">
     </form>
@@ -61,23 +61,22 @@
 <template name="dashboard">
   {{#if currentUser}}
     <h2>Dashboard</h2>
-    <b>Your Target:</b> {{target}} <br>
-    <button name="die" class="die">I've been killed!</button><br>
-    Players:
-    {{> playerslist}} 
-    <br>
-    <button name="guess" class="guess"> Guess </button>
+    <p><b>Your Target:</b> {{target}} </p>
+    <p><button name="die" class="die">I've been killed!</button></p>
+    <p>Players:</p>
+    {{> playerslist}}
+    <p><button name="guess" class="guess"> Guess </button></p>
   {{/if}}
 </template>
 
 <template name="pregame">
   {{#if currentUser}}
     <h2>Game: {{name}} has not started</h2>
-    Players signed up so far:
+    <p>{{count}} players signed up so far:</p>
     {{> playerslist}}
     {{#if manager}}
-      <button class="startButton" name="start-game">Start the game</button>
-      <button class="cancelButton" name="cancel-game">Cancel the game</button>
+      <p><button class="startButton" name="start-game">Start the game</button>
+        <button class="cancelButton" name="cancel-game">Cancel the game</button></p>
     {{/if}}
   {{/if}}
 </template>

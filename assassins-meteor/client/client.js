@@ -193,6 +193,9 @@ Template.pregame.helpers({
     },
     name: function() {
       return Games.findOne({id: currentGameId()}).id
+    },
+    count: function() {
+      return Players.find({gameId: currentGameId()}).fetch().length;
     }
 });
 Template.playerslist.helpers({
