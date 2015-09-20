@@ -81,7 +81,7 @@ Meteor.assassinsEmails.kill_claim = function(target_user) {
   });
 }
 
-Meteor.assassinsEmails.nextTarget = function(hunter_user, target_user) {
+Meteor.assassinsEmails.killedTarget = function(hunter_user, target_user) {
   // Congratulations on killing your last target.
   // Here is your new target.
   Email.send({
@@ -90,6 +90,21 @@ Meteor.assassinsEmails.nextTarget = function(hunter_user, target_user) {
     "subject": Meteor.assassinsEmails.prefix + "Nice, next target.",
     "text":
       "Congratulations on killing your last target.\n" +
+      "Your next target is " + Meteor.assassinsEmails.formatUser(target_user) + "\n" +
+      "If you kill them, encourage them to log in and report their death\n" +
+      Meteor.assassinsEmails.url
+  });
+}
+
+Meteor.assassinsEmails.nextTarget = function(hunter_user, target_user) {
+  // You got a new target because of something other than killing your thing.
+  // Here is your new target.
+  Email.send({
+    "from": "assassins-master@mit.edu",
+    "to": hunter_user.emails[0].address,
+    "subject": Meteor.assassinsEmails.prefix + "You have a new target.",
+    "text":
+      "You have a new target. Your old target must have fallen out a window or something.\n" +
       "Your next target is " + Meteor.assassinsEmails.formatUser(target_user) + "\n" +
       "If you kill them, encourage them to log in and report their death\n" +
       Meteor.assassinsEmails.url
