@@ -43,7 +43,7 @@ p {
     padding: 15px;
     margin: 5px;
     border-radius: 10px 0 10px 0;
-    max-width: 200px;
+    /*max-width: 250px;*/
     background-color: #82B7B3;
     color: #003430;
     border: solid 1px #003430;
@@ -54,7 +54,7 @@ p {
     text-shadow: 1px 1px 1px white;
 }
 
-#create-game, #join-game {
+form#create-game, form#join-game {
     padding: 0 20px;
 }
 #create-game label, #join-game label {
