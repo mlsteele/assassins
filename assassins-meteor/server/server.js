@@ -30,7 +30,7 @@ Meteor.methods({
     Games.update( {
       id: gameId
     }, {
-      $set: { started: true }
+      $set: { started: true, finished:false}
     });
     for (var i = 0; i < players.length; i++) {
       var p1 = players[i];
@@ -41,7 +41,7 @@ Meteor.methods({
       user1 = Meteor.users.findOne({_id: p1.userId});
       user2 = Meteor.users.findOne({_id: p2.userId});
       console.log(user1.emails[0].address); 
-      Meteor.assassinsEmails.nextTarget(user1.emails[0].address,user2.emails[0].address);
+      Meteor.assassinsEmails.gameStarted(user1,gameId,user2);
     }
     console.log("66");
     return {"status": "ok"};

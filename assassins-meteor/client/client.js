@@ -170,6 +170,7 @@ Template.pregame.events({
       } else {
         // console.log("initialized game");
         // console.log(gameId);
+        console.log('bye-bye');
         Router.go("/");
       }
     });
