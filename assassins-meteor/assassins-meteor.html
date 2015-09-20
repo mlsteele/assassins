@@ -96,8 +96,21 @@
 
 <template name="guess">
   {{#if currentUser}}
-    <br> <br>
-    Construct the circle!
+    <br>
+    <div class="circleSpace"> </div>
+
+    <div class="clues">
+      <h2> Clues </h2>
+      <div class="savedClues">
+        <ul>
+          <!-- list all clues -->
+        </ul>
+      </div>
+    </div>
+
+    <label> Add a clue: </label> <br>
+    <textarea class="newClue" rows="3" cols="50"> </textarea> <br>
+    <button class="submitClue"> Add Clue </button> <br> <br>
 
   {{/if}}
 </template>

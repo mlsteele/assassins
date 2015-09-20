@@ -1,12 +1,23 @@
 /**** Helper Functions ****/
-function getCurrentGameId() {
+
+function getCurrentPlayer() {
     if (!Meteor.user()) return undefined;
     var profile = Meteor.user().profile;
     if (!profile) return undefined;
     if (!profile.currentPlayerId) return undefined;
-    var player = Players.findOne({_id: profile.currentPlayerId});
+    return Players.findOne({_id: profile.currentPlayerId});
+}
+
+function getCurrentGameId() {
+    var player = getCurrentPlayer();
     if (!player) return undefined;
     return player.gameId;
+}
+
+function getCurrentClues() {
+    var player = getCurrentPlayer();
+    if (!player) return undefined;
+    return player.currentClues;
 }
 
 function setCurrentPlayerId(id) {
@@ -261,8 +272,6 @@ Template.dashboard.events({
     "click .guess": function() {
       Router.go("/guess");
     }
-
-
 });
 
 //against default signup, which asks for email
