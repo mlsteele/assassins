@@ -247,11 +247,13 @@ Template.dashboard.events({
           gameId: getCurrentGameId,
           currentVictim: player._id
       });
-      Players.update({
+      if (killer) {
+        Players.update({
           userId: killer.userId
-      }, {
+        }, {
             $set: {currentVictim: player.currentVictim}
-      });
+        });
+      }
       Players.update({
           userId: userId
       }, {
