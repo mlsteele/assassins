@@ -167,10 +167,10 @@ Template.init.events({
 });
 Template.pregame.helpers({
     manager: function() {
-      var player = Players.findOne({id: Meteor.user().profile.currentPlayerId});
-      if (player == undefined) return false;
-      var game = Games.findOne({id: player.gameId});
-      return (game.managerUserId == Meteor.getUserId());
+      var game = Games.findOne({
+        "id": currentGameId()
+      });
+      return (game.managerUserId == Meteor.userId());
     }
 });
 Template.playerslist.helpers({
