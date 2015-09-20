@@ -39,6 +39,17 @@ Meteor.assassinsEmails.gameStarted = function(to_user, game_name, target_user) {
   });
 }
 
+Meteor.assassinsEmails.announceDeath = function(to_email) {
+  // Someone has died.
+  Email.send({
+    "from": "assassins-master@mit.edu",
+    "to": to_email,
+    "subject": Meteor.assassinsEmails.prefix + "BOOM!",
+    "text":
+      "" + Meteor.assassinsEmails.formatUser(target_user) + " is dead."
+  });
+}
+
 Meteor.assassinsEmails.kill_claim = function(target_user) {
   // Someone has claimed to have killed you.
   // Please log in and acknowledge your death.
