@@ -16,7 +16,7 @@
       {{> start}}
     {{/if}}
   {{else}}
-    {{> start}}
+    <p>Please log in first.</p>
   {{/if}}
 </template>
 
@@ -25,7 +25,7 @@
     <a class="start-link" href="{{pathFor route='create'}}">Create a new game</a>
     <a class="start-link" href="{{pathFor route='join'}}">Join a game</a>
   {{else}}
-    Please log in first.
+  <p>Please log in first.</p>
   {{/if}}
 </template>
 
@@ -41,6 +41,8 @@
     {{#if errorMessage}}
       <span>{{errorMessage}}</span>
     {{/if}}
+  {{else}}
+    <p>Please log in first.</p>
   {{/if}}
 </template>
 
@@ -56,6 +58,8 @@
     {{#if badGameId}}
       <span>No game named "{{badGameId}}"</span>
     {{/if}}
+  {{else}}
+    <p>Please log in first.</p>
   {{/if}}
 </template>
 
@@ -67,6 +71,8 @@
     <p>Players:</p>
     {{> playerslist}}
     <p><button name="guess" class="guess"> Guess </button></p>
+  {{else}}
+    <p>Please log in first.</p>
   {{/if}}
 </template>
 
@@ -79,6 +85,8 @@
       <p><button class="startButton" name="start-game">Start the game</button>
         <button class="cancelButton" name="cancel-game">Cancel the game</button></p>
     {{/if}}
+  {{else}}
+    <p>Please log in first.</p>
   {{/if}}
 </template>
 
@@ -113,6 +121,7 @@
     <label> Add a clue: </label> <br>
     <textarea class="newClue" rows="3" cols="50"> </textarea> <br>
     <button class="submitClue"> Add Clue </button> <br> <br>
-
+  {{else}}
+    <p>Please log in first.</p>
   {{/if}}
 </template>
