@@ -60,5 +60,13 @@ Meteor.methods({
     }
     return {"status": "ok"};
   }
+  cancelGame: function(gameId) {
+    var game = Games.findOne({"id": gameId});
+    Games.update( {
+      id: gameId  
+    }, {
+        $set: {finished: true} 
+    });
+  }
 });
 

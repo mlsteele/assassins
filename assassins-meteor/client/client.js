@@ -168,6 +168,19 @@ Template.pregame.events({
         Router.go("/");
       }
     });
+  },
+  "click .cancelButton": function(event) {
+    event.preventDefault();
+    var gameId = currentGameId();
+    var game = Games.findOne({
+        "id":gameId
+    });
+        if (game.started){
+      //TODO send Email saying that running game has been canceled
+    } else {
+      //TODO send Email saying the game has been canceled before it started
+    }
+    console.log("pushed cancelButton");
   }
 });
 Template.pregame.helpers({
