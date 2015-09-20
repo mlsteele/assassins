@@ -1,5 +1,5 @@
 /**** Helper Functions ****/
-function getCurrentGameid() {
+function getCurrentGameId() {
     if (!Meteor.user()) return undefined;
     var profile = Meteor.user().profile;
     if (!profile) return undefined;
@@ -72,10 +72,10 @@ function getCurrentUserName() {
 
 Template.home.helpers({
   joinedGame: function() {
-    return getCurrentGameid() != undefined
+    return getCurrentGameId() != undefined
   },
   gameRunning: function() {
-    var game = Games.findOne({id: getCurrentGameid()});
+    var game = Games.findOne({id: getCurrentGameId()});
     if (game == undefined) return false;
     return game.started && !game.finished;
   }
@@ -160,7 +160,7 @@ Template.join.events({
 Template.pregame.events({
   "click .startButton": function(event) {
     event.preventDefault();
-    var gameId = getCurrentGameid();
+    var gameId = getCurrentGameId();
     console.log("push startButton");
     Meteor.call('initializeGame',gameId, function (error, result) {
       console.log("error",error);
@@ -176,7 +176,7 @@ Template.pregame.events({
   },
   "click .cancelButton": function(event) {
     event.preventDefault();
-    var gameId = getCurrentGameid();
+    var gameId = getCurrentGameId();
     var game = Games.findOne({
         "_id":gameId
     });
@@ -192,25 +192,25 @@ Template.pregame.events({
 Template.pregame.helpers({
     manager: function() {
       var game = Games.findOne({
-        "id": getCurrentGameid()
+        "id": getCurrentGameId()
       });
       return (game.managerUserId == Meteor.userId());
     },
     name: function() {
-      return Games.findOne({id: getCurrentGameid()}).id
+      return Games.findOne({id: getCurrentGameId()}).id
     },
     count: function() {
-      return Players.find({gameId: getCurrentGameid()}).fetch().length;
+      return Players.find({gameId: getCurrentGameId()}).fetch().length;
     }
 });
 Template.playerslist.helpers({
     players: function() {
-      if (!getCurrentGameid()) {
+      if (!getCurrentGameId()) {
           console.error("Tried to view pregame without current game");
           return [];
       }
-      var players = Players.find({gameId: getCurrentGameid()});
-      var managerUserId = Games.findOne({id: getCurrentGameid()}).managerUserId;
+      var players = Players.find({gameId: getCurrentGameId()});
+      var managerUserId = Games.findOne({id: getCurrentGameId()}).managerUserId;
       return players.map(function(player) {
         var user = Meteor.users.findOne({_id: player.userId})
         return {
@@ -226,13 +226,13 @@ Template.dashboard.events({
     "click .die": function() {
       // get player's victim and send it to the killer
       var userId = Meteor.user()._id;
-      getCurrentGameid = getCurrentGameid();
+      getCurrentGameId = getCurrentGameId();
       var player = Players.findOne({
-        gameId: getCurrentGameid,
+        gameId: getCurrentGameId,
         userId: userId
       });
       var killer = Players.findOne({
-          gameId: getCurrentGameid,
+          gameId: getCurrentGameId,
           currentVictim: userId
       });
       Players.update({
