@@ -97,7 +97,7 @@ Template.home.helpers({
     if (gameId == undefined) return false;
     var game = Games.findOne({id: gameId});
     if (game== undefined) return false;
-    return game.started && game.finished;
+    return !game.started && game.finished;
   }
 });
 
@@ -318,7 +318,11 @@ Template.dashboard.events({
       Router.go("/guess");
     }
 });
-
+Template.canceled.helpers({
+  name : function () {
+    return Games.findOne({id: getCurrentGameId()}).id
+    }
+});
 //against default signup, which asks for email
 Accounts.ui.config({
   passwordSignupFields: "EMAIL_ONLY"

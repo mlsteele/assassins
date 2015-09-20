@@ -99,6 +99,11 @@
   {{/if}}
 </template>
 
+<template name="canceled">
+  {{#if currentUser}}
+  <h1> Game: {{name}} canceled</h1> 
+  {{/if}}
+</template>
 <template name="playerslist">
   {{#if currentUser}}
     <ul>
