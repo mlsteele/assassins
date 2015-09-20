@@ -15,6 +15,9 @@
     {{else}}
       {{> pregame}}
     {{/if}}
+    {{#if gameCanceled}} 
+      {{> canceled}}
+    {{/if}}
   {{else}}
     {{> nogame}}
   {{/if}}
