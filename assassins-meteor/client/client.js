@@ -173,7 +173,7 @@ Template.pregame.events({
     event.preventDefault();
     var gameId = currentGameId();
     var game = Games.findOne({
-        "id":gameId
+        "_id":gameId
     });
     Meteor.call('cancelGame', gameId, function(error,result) {
         if (error) {

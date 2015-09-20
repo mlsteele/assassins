@@ -35,14 +35,15 @@ Meteor.methods({
     for (var i = 0; i < players.length; i++) {
       var p1 = players[i];
       var p2 = players[(i + 1) % players.length];
-      p1.currentVictim = p2.id;
+      p1.currentVictim = p2.userId;
       p1.alive = true;
       p1.victimList = [];
-      p1.email
+      user1 =Meteor.users.findOne({_id: p1.userId});
+      console.log(user1.emails[0].address); 
       Email.send({
       "from": "assassins-master@mit.edu",
       "to": [
-        p1.email
+        user1.emails[0].address
       ],
       "subject": "now it sends",
       "text": p1.currentVictim,
