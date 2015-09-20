@@ -69,7 +69,8 @@
 </template>
 
 <template name="pregame">
-  The game hasn't started yet. Here are the signed up players:
+  <h2>Game: {{name}} has not started</h2>
+  Players signed up so far:
   {{> playerslist}}
   {{#if manager}}
     <button name="start-game">Start the game</button>

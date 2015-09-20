@@ -171,6 +171,9 @@ Template.pregame.helpers({
         "id": currentGameId()
       });
       return (game.managerUserId == Meteor.userId());
+    },
+    name: function() {
+      return Games.findOne({id: currentGameId()}).id
     }
 });
 Template.playerslist.helpers({
