@@ -15,6 +15,7 @@ var sendEmail = function(parameters) {
   if (Meteor.settings.email_suppress) {
     console.log("Suppressed email", parameters);
   } else {
+    console.log("Sending email", parameters);
     Email.send(parameters);
   }
 }
