@@ -34,15 +34,12 @@ Meteor.assassinsEmails.invitation = function(to_email, game_name) {
   });
 }
 
-Meteor.assassinsEmails.cancelled = function(to_users, game_name) {
+Meteor.assassinsEmails.cancelled = function(to_email, game_name) {
   // This game has been cancelled.
-  var emails = to_users.map(function(user) {
-    return user.emails[0].address;
-  });
 
   sendEmail({
     "from": "assassins-master@mit.edu",
-    "to": emails,
+    "to": to_email,
     "subject": Meteor.assassinsEmails.prefix + "Game cancelled.",
     "text":
       "The game '"+game_name+"' has been cancelled."
