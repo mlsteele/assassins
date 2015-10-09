@@ -229,9 +229,11 @@ Template.pregame.events({
     event.preventDefault();
     var gameId = getCurrentGameId();
     var player = getCurrentPlayer();
+    console.log(gameId)
     var game = Games.findOne({
         "id":gameId
     });
+    console.log("Client: calling server to cancel game")
     Meteor.call('cancelGame', gameId, function(error,result) {
         if (error) {
             // handle error
@@ -239,13 +241,18 @@ Template.pregame.events({
         }
     console.log(game);
     });
-    console.log("pushed cancelButton");
+    console.log("updating client game");
     Games.update({
             _id: game._id
         }, {
             $set: {finished: true}
         });
-    Players.update({_id: player._id}, { $set: {gameId: undefined}});
+    console.log("canceled game!")
+    Players.update({
+            _id: player._id
+        }, { 
+            $set: {gameId: undefined}
+        });
   },
   "click #leavePregame": function(event) {
       event.preventDefault();

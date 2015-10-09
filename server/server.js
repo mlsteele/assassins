@@ -49,6 +49,7 @@ Meteor.methods({
     return {"status": "ok"};
   },
   cancelGame: function(gameId) {
+    console.log("Server.js: canceling game...")
     console.log(gameId);
     var game = Games.findOne({"id": gameId});
     Games.update( {
@@ -57,6 +58,7 @@ Meteor.methods({
         $set: {finished: true}
     });
     console.log(game);
+    Meteor.assassinsEmails.cancelled(game.mailingList,gameId)
     if (game.started){
       //TODO send Email saying that running game has been canceled
       console.log("running game canceled");
