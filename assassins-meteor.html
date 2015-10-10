@@ -9,6 +9,8 @@
 </template>
 
 <template name="home">
+  {{#if gameFinished}}
+    {{> no game}}
   {{#if joinedGame}}
     {{#if gameRunning}}
       {{> dashboard}}
