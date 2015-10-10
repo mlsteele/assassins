@@ -11,6 +11,7 @@
 <template name="home">
   {{#if gameFinished}}
     {{> no game}}
+  {{/if}}
   {{#if joinedGame}}
     {{#if gameRunning}}
       {{> dashboard}}
