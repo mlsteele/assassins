@@ -5,10 +5,14 @@ Database collections and schemas.
 Schemas = {};
 
 Games = new Mongo.Collection("games");
+if (Meteor.isServer) {
+  Games._ensureIndex({name: 1}, {unique: 1});
+}
 
 Schemas.Game = new SimpleSchema({
-  id: {
+  name: {
     type: "String",
+    label: "Name of the game."
   },
   mailingList: {
     type: SimpleSchema.RegEx.Email,
@@ -30,15 +34,18 @@ Games.attachSchema(Schemas.Game);
 
 
 Players = new Mongo.Collection("players");
+if (Meteor.isServer) {
+  Players._ensureIndex({userId: 1, gameId: 1}, {unique: 1});
+}
 
 Schemas.Player = new SimpleSchema({
-  gameId: {
-    type: "String",
-    label: "id of the Game this player is in."
-  },
   userId: {
     type: SimpleSchema.RegEx.Id,
     label: "_id of the User of this player."
+  },
+  gameId: {
+    type: SimpleSchema.RegEx.Id,
+    label: "_id of the Game this player is in."
   },
   currentVictim: {
     type: SimpleSchema.RegEx.Id,

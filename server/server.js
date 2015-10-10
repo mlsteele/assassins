@@ -19,7 +19,7 @@ Meteor.startup(function () {
 
 Meteor.methods({
   initializeGame: function(gameId) {
-    var game = Games.findOne({"id": gameId});
+    var game = Games.findOne({"_id": gameId});
     console.log(game);
     if (!game) {
       console.log("Not a game!")
@@ -40,10 +40,10 @@ Meteor.methods({
       }});
       user1 = Meteor.users.findOne({_id: p1.userId});
       user2 = Meteor.users.findOne({_id: p2.userId});
-      Meteor.assassinsEmails.gameStarted(user1,gameId,user2);
+      Meteor.assassinsEmails.gameStarted(user1, game.name, user2);
     }
     Games.update( {
-      id: gameId
+      _id: gameId
     }, {
       $set: { started: true, finished:false}
     });
@@ -52,14 +52,14 @@ Meteor.methods({
   cancelGame: function(gameId) {
     console.log("Server.js: canceling game...")
     console.log(gameId);
-    var game = Games.findOne({"id": gameId});
+    var game = Games.findOne({"_id": gameId});
     Games.update( {
-      id: gameId
+      _id: gameId
     }, {
         $set: {finished: true}
     });
     console.log(game);
-    Meteor.assassinsEmails.cancelled(game.mailingList,gameId)
+    Meteor.assassinsEmails.cancelled(game.mailingList, game.name)
     if (game.started){
       //TODO send Email saying that running game has been canceled
       console.log("running game canceled");
@@ -70,8 +70,8 @@ Meteor.methods({
     return "something";
   },
   createGame: function(mailingList, gameId) {
-    Meteor.assassinsEmails.invitation(mailingList,gameId);
-    console.log("sent email to", mailingList);
+    var game = Games.findOne({_id: gameId});
+    Meteor.assassinsEmails.invitation(mailingList, game.name);
     return "something";
   },
   newTarget: function(killerPlayer) {

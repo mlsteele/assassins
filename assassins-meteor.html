@@ -64,8 +64,8 @@
       <label>Game name: <input type="text" name="name"></label>
       <input type="submit" name="join-game" value="join">
     </form>
-    {{#if badGameId}}
-      <span>No active game named "{{badGameId}}"</span>
+    {{#if badGameName}}
+      <span>No active game named "{{badGameName}}"</span>
     {{/if}}
   {{else}}
     <p>Please log in first.</p>

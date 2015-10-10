@@ -36,7 +36,7 @@ function joinGame(gameId) {
     gameId: gameId,
     userId: Meteor.userId()
   });
-  var game = Games.findOne({id: gameId});
+  var game = Games.findOne({_id: gameId});
   if (game && (game.started == true || game.finished == true)) {
     console.err("Cannot start a game that already started");
     return;
@@ -89,7 +89,7 @@ Template.home.helpers({
   gameRunning: function() {
     var gameId = getCurrentGameId();
     if (gameId == undefined) return false;
-    var game = Games.findOne({id: gameId});
+    var game = Games.findOne({_id: gameId});
     if (game == undefined) return false;
     console.log("game started",game.started);
     console.log("game finished",game.finished);
@@ -99,7 +99,7 @@ Template.home.helpers({
   gameFinished: function() {
     var gameId = getCurrentGameId();
     if (gameId == undefined) return false;
-    var game = Games.findOne({id: gameId});
+    var game = Games.findOne({_id: gameId});
     if (game== undefined) return false;
     return game.finished;
   }
@@ -138,10 +138,10 @@ Template.create.events({
   "submit form": function(event) {
     event.preventDefault();
     setCurrentUserName(event.target.username.value);
-    var gameId = event.target.name.value;
+    var gameName = event.target.name.value;
     var mailingList = event.target.list.value;
     var game = Games.findOne({
-      "id": gameId
+      "name": gameName
     });
 
     if (game) {
@@ -150,7 +150,7 @@ Template.create.events({
       return;
     }
 
-    if (!gameId) {
+    if (!gameName) {
       Session.set("createErrorMessage",
                   "A game name is required.");
       return;
@@ -162,29 +162,30 @@ Template.create.events({
       return;
     }
 
+    Session.set("createErrorMessage", undefined);
+
     Games.insert({
-      id: gameId,
+      name: gameName,
       mailingList: mailingList,
       managerUserId: Meteor.user()._id,
       started: false,
       finished: false
-    });
+    }, function(err, gameId) {
+      if (err) { throw err; }
+      joinGame(gameId);
 
-    Session.set("createErrorMessage", undefined);
-
-    joinGame(gameId);
-
-    Meteor.call("createGame", mailingList, gameId, function(error,result) {
-      if (error) {
-        console.error(error);
-      }
+      Meteor.call("createGame", mailingList, gameId, function(error,result) {
+        if (error) {
+          console.error(error);
+        }
+      });
     });
   }
 });
 
 Template.join.helpers({
-  badGameId: function() {
-    return Session.get("badGameId");
+  badGameName: function() {
+    return Session.get("badGameName");
   },
   displayName: function() {
     return getCurrentUserName();
@@ -195,15 +196,15 @@ Template.join.events({
   "submit form": function(event) {
     event.preventDefault();
     setCurrentUserName(event.target.username.value);
-    var gameId = event.target.name.value;
+    var gameName = event.target.name.value;
     var game = Games.findOne({
-      "id": gameId
+      name: gameName
     });
     if (game && !game.started && !game.finished) {
-      Session.set("badGameId", undefined);
-      joinGame(gameId);
+      Session.set("badGameName", undefined);
+      joinGame(gameName);
     } else {
-      Session.set("badGameId", gameId);
+      Session.set("badGameName", gameName);
     }
   }
 });
@@ -233,7 +234,7 @@ Template.pregame.events({
     var player = getCurrentPlayer();
     console.log(gameId)
     var game = Games.findOne({
-        "id":gameId
+        _id: gameId
     });
     console.log("Client: calling server to cancel game")
     Meteor.call('cancelGame', gameId, function(error,result) {
@@ -266,12 +267,12 @@ Template.pregame.events({
 Template.pregame.helpers({
     manager: function() {
       var game = Games.findOne({
-        "id": getCurrentGameId()
+        _id: getCurrentGameId()
       });
       return (game.managerUserId == Meteor.userId());
     },
     name: function() {
-      return Games.findOne({id: getCurrentGameId()}).id
+      return Games.findOne({_id: getCurrentGameId()}).id
     },
     count: function() {
       return Players.find({gameId: getCurrentGameId()}).fetch().length;
@@ -285,7 +286,7 @@ Template.playerslist.helpers({
           return [];
       }
       var players = Players.find({gameId: getCurrentGameId()});
-      var managerUserId = Games.findOne({id: getCurrentGameId()}).managerUserId;
+      var managerUserId = Games.findOne({_id: getCurrentGameId()}).managerUserId;
       return players.map(function(player) {
         var user = Meteor.users.findOne({_id: player.userId})
         return {
@@ -341,7 +342,7 @@ Template.dashboard.events({
 });
 Template.canceled.helpers({
   name : function () {
-    return Games.findOne({id: getCurrentGameId()}).id
+    return Games.findOne({_id: getCurrentGameId()}).id
     }
 });
 Template.canceled.events({
