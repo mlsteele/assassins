@@ -1,38 +1,38 @@
 /**** Helper Functions ****/
 
-function getCurrentPlayer() {
+function getCurrentCharacter() {
     if (!Meteor.user()) return undefined;
     var profile = Meteor.user().profile;
     if (!profile) return undefined;
-    if (!profile.currentPlayerId) return undefined;
-    return Players.findOne({_id: profile.currentPlayerId});
+    if (!profile.currentCharacterId) return undefined;
+    return Characters.findOne({_id: profile.currentCharacterId});
 }
 
 function getCurrentGameId() {
-    var player = getCurrentPlayer();
-    if (!player) return undefined;
-    return player.gameId;
+    var character = getCurrentCharacter();
+    if (!character) return undefined;
+    return character.gameId;
 }
 
 function getCurrentClues() {
-    var player = getCurrentPlayer();
-    if (!player) return undefined;
-    return player.currentClues;
+    var character = getCurrentCharacter();
+    if (!character) return undefined;
+    return character.currentClues;
 }
 
-function setCurrentPlayerId(id) {
+function setCurrentCharacterId(id) {
     if (!Meteor.user()) {
-        console.error("Setting current player but no user exists");
+        console.error("Setting current Character but no user exists");
         return undefined;
     }
     Meteor.users.update({_id: Meteor.user()._id},
-        {$set: {'profile.currentPlayerId': id}});
+        {$set: {'profile.currentCharacterId': id}});
 }
 
 // Set the users active game.
 function joinGame(gameId) {
-  // Use an existing player if one exists.
-  var player = Players.findOne({
+  // Use an existing character if one exists.
+  var character = Characters.findOne({
     gameId: gameId,
     userId: Meteor.userId()
   });
@@ -42,18 +42,18 @@ function joinGame(gameId) {
     return;
   }
 
-  if (player) {
-    setCurrentPlayerId(player._id);
+  if (character) {
+    setCurrentCharacterId(character._id);
   } else {
-    // Create a Player if there isn't one.
-    Players.insert({
+    // Create a Character if there isn't one.
+    Characters.insert({
       gameId: gameId,
       userId: Meteor.user()._id
-    }, function(err, playerId) {
+    }, function(err, characterId) {
       if (err) {
         console.error(err);
       } else {
-        setCurrentPlayerId(playerId);
+        setCurrentCharacterId(characterId);
       }
     });
   }
@@ -231,7 +231,7 @@ Template.pregame.events({
   "click .cancelButton": function(event) {
     event.preventDefault();
     var gameId = getCurrentGameId();
-    var player = getCurrentPlayer();
+    var character = getCurrentCharacter();
     console.log(gameId)
     var game = Games.findOne({
         _id: gameId
@@ -251,16 +251,16 @@ Template.pregame.events({
             $set: {finished: true}
         });
     console.log("canceled game!")
-    Players.update({
-            _id: player._id
+    Characters.update({
+            _id: character._id
         }, { 
             $set: {gameId: undefined}
         });
   },
   "click #leavePregame": function(event) {
       event.preventDefault();
-      Players.remove({_id: getCurrentPlayer()._id});
-      setCurrentPlayerId(undefined);
+      Characters.remove({_id: getCurrentCharacter()._id});
+      setCurrentCharacterId(undefined);
       //TODO fix set is empty error
   }
 });
@@ -275,7 +275,7 @@ Template.pregame.helpers({
       return Games.findOne({_id: getCurrentGameId()}).id
     },
     count: function() {
-      return Players.find({gameId: getCurrentGameId()}).fetch().length;
+      return Characters.find({gameId: getCurrentGameId()}).fetch().length;
     }
 });
 
@@ -285,13 +285,13 @@ Template.playerslist.helpers({
           console.error("Tried to view pregame without current game");
           return [];
       }
-      var players = Players.find({gameId: getCurrentGameId()});
+      var characters = Characters.find({gameId: getCurrentGameId()});
       var managerUserId = Games.findOne({_id: getCurrentGameId()}).managerUserId;
-      return players.map(function(player) {
-        var user = Meteor.users.findOne({_id: player.userId})
+      return characters.map(function(character) {
+        var user = Meteor.users.findOne({_id: character.userId})
         return {
           name: user.profile.name,
-          manager: managerUserId == player.userId
+          isManager: managerUserId == character.userId
         }
       });
     }
@@ -299,26 +299,26 @@ Template.playerslist.helpers({
 
 Template.dashboard.helpers({
     target: function() {
-        var player = getCurrentPlayer();
-        var targetId = player.currentVictim;
-        var targetPlayer = Players.findOne({_id: targetId});
-        var targetUser = Meteor.users.findOne({_id: targetPlayer.userId});
+        var character = getCurrentCharacter();
+        var targetId = character.currentVictim;
+        var targetCharacter = Characters.findOne({_id: targetId});
+        var targetUser = Meteor.users.findOne({_id: targetCharacter.userId});
         return targetUser.profile.name;
     }
 });
 Template.dashboard.events({
     "click .die": function() {
-      // get player's victim and send it to the killer
-      var player = getCurrentPlayer();
-      var killer = Players.findOne({
+      // get character's victim and send it to the killer
+      var character = getCurrentCharacter();
+      var killer = Characters.findOne({
           gameId: getCurrentGameId(),
-          currentVictim: player._id
+          currentVictim: character._id
       });
       if (killer) {
-        Players.update({
+        Characters.update({
             _id: killer._id
         }, {
-            $set: {currentVictim: player.currentVictim}
+            $set: {currentVictim: character.currentVictim}
         });
         Meteor.call('newTarget', killer, function(error,result) {
           if (error) {
@@ -326,10 +326,10 @@ Template.dashboard.events({
           }
         });
       } else {
-          console.error("Unexpected no killer for player ", player);
+          console.error("Unexpected no killer for character ", character);
       }
-      Players.update({
-          _id: player._id
+      Characters.update({
+          _id: character._id
       }, {
            $set: {alive: false}
       });
@@ -347,7 +347,7 @@ Template.canceled.helpers({
 });
 Template.canceled.events({
   "click .leaveGame": function() {
-  console.log("playerId set to undefined");
+  console.log("characterId set to undefined");
   }
 });
 //against default signup, which asks for email

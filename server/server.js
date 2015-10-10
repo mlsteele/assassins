@@ -26,14 +26,14 @@ Meteor.methods({
       return {"status": "failed", "error": "No such game."};
     }
     console.log("41");
-    var players = Players.find({"gameId": gameId}).fetch();
-    players = shuffleArray(players);
-    console.log("Shuffled players:" , players);
+    var characters = Characters.find({"gameId": gameId}).fetch();
+    characters = shuffleArray(characters);
+    console.log("Shuffled characters:" , characters);
 
-    for (var i = 0; i < players.length; i++) {
-      var p1 = players[i];
-      var p2 = players[(i + 1) % players.length];
-      Players.update({_id: p1._id}, {$set: {
+    for (var i = 0; i < characters.length; i++) {
+      var p1 = characters[i];
+      var p2 = characters[(i + 1) % characters.length];
+      Characters.update({_id: p1._id}, {$set: {
           currentVictim: p2._id,
           alive: true,
           victimList: []
@@ -74,11 +74,11 @@ Meteor.methods({
     Meteor.assassinsEmails.invitation(mailingList, game.name);
     return "something";
   },
-  newTarget: function(killerPlayer) {
-    var newTargetPlayer = Players.findOne({_id: killerPlayer.currentVictim});
+  newTarget: function(killerCharacter) {
+    var newTargetCharacter = Characters.findOne({_id: killerCharacter.currentVictim});
     Meteor.assassinsEmails.nextTarget(
-        Meteor.users.findOne({_id: killerPlayer.userId}),
-        Meteor.users.findOne({_id: newTargetPlayer.userId})
+      Meteor.users.findOne({_id: killerCharacter.userId}),
+      Meteor.users.findOne({_id: newTargetCharacter.userId})
     );
     return "something";
   }

@@ -33,19 +33,19 @@ Schemas.Game = new SimpleSchema({
 Games.attachSchema(Schemas.Game);
 
 
-Players = new Mongo.Collection("players");
+Characters = new Mongo.Collection("characters");
 if (Meteor.isServer) {
-  Players._ensureIndex({userId: 1, gameId: 1}, {unique: 1});
+  Characters._ensureIndex({userId: 1, gameId: 1}, {unique: 1});
 }
 
-Schemas.Player = new SimpleSchema({
+Schemas.Character = new SimpleSchema({
   userId: {
     type: SimpleSchema.RegEx.Id,
-    label: "_id of the User of this player."
+    label: "_id of the User of this Character."
   },
   gameId: {
     type: SimpleSchema.RegEx.Id,
-    label: "_id of the Game this player is in."
+    label: "_id of the Game this Character is in."
   },
   currentVictim: {
     type: SimpleSchema.RegEx.Id,
@@ -58,7 +58,7 @@ Schemas.Player = new SimpleSchema({
   },
   victimList: {
     type: Array,
-    label: "_ids of players this one has killed.",
+    label: "_ids of Characters this one has killed.",
     optional: true,
   },
   "victimList.$": {
@@ -66,4 +66,4 @@ Schemas.Player = new SimpleSchema({
   }
 });
 
-Players.attachSchema(Schemas.Player);
+Characters.attachSchema(Schemas.Character);
