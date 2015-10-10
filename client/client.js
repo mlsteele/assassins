@@ -83,6 +83,7 @@ function getCurrentUserName() {
 
 Template.home.helpers({
   joinedGame: function() {
+    console.log("joinedGame ",getCurrentGameId() != undefined)
     return getCurrentGameId() != undefined
   },
   gameRunning: function() {
@@ -92,6 +93,7 @@ Template.home.helpers({
     if (game == undefined) return false;
     console.log("game started",game.started);
     console.log("game finished",game.finished);
+    console.log("game running ", game.started && !game.finished)
     return game.started && !game.finished;
   },
   gameFinished: function() {
