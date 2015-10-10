@@ -80,6 +80,11 @@ function getCurrentUserName() {
 
 /**** Client Code****/
 
+Template.main.helpers({
+  gameId: function() {
+    return getCurrentGameId();
+  }
+});
 
 Template.home.helpers({
   joinedGame: function() {
@@ -202,7 +207,7 @@ Template.join.events({
     });
     if (game && !game.started && !game.finished) {
       Session.set("badGameName", undefined);
-      joinGame(gameName);
+      joinGame(game._id);
     } else {
       Session.set("badGameName", gameName);
     }
@@ -272,7 +277,7 @@ Template.pregame.helpers({
       return (game.managerUserId == Meteor.userId());
     },
     name: function() {
-      return Games.findOne({_id: getCurrentGameId()}).id
+      return Games.findOne({_id: getCurrentGameId()}).name
     },
     count: function() {
       return Characters.find({gameId: getCurrentGameId()}).fetch().length;

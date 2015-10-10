@@ -76,3 +76,9 @@ input[type=submit], button {
     font-size: 1em;
     border-radius: 8px 0 8px 0;
 }
+.debug {
+    position: absolute;
+    font-size: 10px;
+    color: #000;
+    padding: 4px;
+}
