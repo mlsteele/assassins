@@ -5,9 +5,19 @@ Meteor.assassinsEmails.prefix = "[Assassins] "
 // TODO: this is not correct.
 Meteor.assassinsEmails.url = "http://assassins.xvm.mit.edu/"
 
+function emailAddress(user) {
+  if (user.emails != undefined && user.emails.length > 0) {
+    return user.emails[0].address;
+  } else if (user.services != undefined && user.services.google != undefined) {
+    return user.services.google.email;
+  } else {
+    console.error("NO EMAIL FOR USER");
+  }
+}
+
 Meteor.assassinsEmails.formatUser = function(user) {
   var displayName = user.profile.name;
-  var email = user.emails[0].address;
+  var email = emailAddress(user);
   return "" + displayName + " (" + email + ")"
 }
 
@@ -36,6 +46,7 @@ Meteor.assassinsEmails.invitation = function(to_email, game_name) {
 
 Meteor.assassinsEmails.cancelled = function(to_email, game_name) {
   // This game has been cancelled.
+  var emails = to_users.map(emailAddress);
 
   sendEmail({
     "from": "assassins-master@mit.edu",
@@ -51,7 +62,7 @@ Meteor.assassinsEmails.gameStarted = function(to_user, game_name, target_user) {
   // Here is your first targetd.
   sendEmail({
     "from": "assassins-master@mit.edu",
-    "to": to_user.emails[0].address,
+    "to": emailAddress(to_user),
     "subject": Meteor.assassinsEmails.prefix + "The game has begun.",
     "text":
       "The game of assassins '" + game_name + "' has begun.\n" +
@@ -76,7 +87,7 @@ Meteor.assassinsEmails.kill_claim = function(target_user) {
   // Please log in and acknowledge your death.
   sendEmail({
     "from": "assassins-master@mit.edu",
-    "to": target_user.emails[0].address,
+    "to": emailAddress(target_user),
     "subject": Meteor.assassinsEmails.prefix + "Did someone kill you?",
     "text":
       "Someone has claimed to have killed you.\n" +
@@ -92,7 +103,7 @@ Meteor.assassinsEmails.killedTarget = function(hunter_user, target_user) {
   // Here is your new target.
   sendEmail({
     "from": "assassins-master@mit.edu",
-    "to": hunter_user.emails[0].address,
+    "to": emailAddress(hunter_user),
     "subject": Meteor.assassinsEmails.prefix + "Nice, next target.",
     "text":
       "Congratulations on killing your last target.\n" +
@@ -107,7 +118,7 @@ Meteor.assassinsEmails.nextTarget = function(hunter_user, target_user) {
   // Here is your new target.
   sendEmail({
     "from": "assassins-master@mit.edu",
-    "to": hunter_user.emails[0].address,
+    "to": emailAddress(hunter_user),
     "subject": Meteor.assassinsEmails.prefix + "You have a new target.",
     "text":
       "You have a new target. Your old target must have fallen out a window or something.\n" +
@@ -140,7 +151,7 @@ Meteor.assassinsEmails.gameOverWin = function(winner_user, game_name) {
   // TODO: stats link
   sendEmail({
     "from": "assassins-master@mit.edu",
-    "to": winner_user.emails[0].address,
+    "to": emailAddress(winner_user),
     "subject": Meteor.assassinsEmails.prefix + "You win!",
     "text":
       "The game '"+game_name+"' is over, you have slain them all!\n" +
@@ -154,7 +165,7 @@ Meteor.assassinsEmails.gameOverLose = function(winner_user, game_name) {
   // TODO: stats link
   sendEmail({
     "from": "assassins-master@mit.edu",
-    "to": winner_user.emails[0].address,
+    "to": emailAddress(winner_user),
     "subject": Meteor.assassinsEmails.prefix + "Game over.",
     "text":
       "The game '"+game_name+"' is over.\n" +

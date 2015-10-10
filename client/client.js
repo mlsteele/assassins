@@ -72,7 +72,7 @@ function getCurrentUserName() {
     if (Meteor.user()) {
         if (Meteor.user().profile && Meteor.user().profile.name) {
             return Meteor.user().profile.name;
-        } else {
+        } else if (Meteor.user().emails) {
             return Meteor.user().emails[0].address.split("@")[0];
         }
     }
