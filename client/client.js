@@ -83,6 +83,10 @@ function getCurrentUserName() {
 Template.main.helpers({
   gameId: function() {
     return getCurrentGameId();
+  },
+
+  showQuickLogin: function() {
+    return Meteor.settings.public.fake_db_mode === true;
   }
 });
 
@@ -345,16 +349,34 @@ Template.dashboard.events({
       Router.go("/guess");
     }
 });
+
 Template.canceled.helpers({
   name : function () {
     return Games.findOne({_id: getCurrentGameId()}).id
     }
 });
+
 Template.canceled.events({
   "click .leaveGame": function() {
   console.log("characterId set to undefined");
   }
 });
+
+Template.quicklogin.helpers({
+  users: function() {
+    return Meteor.users.find().map(function(user) {
+      return {username: user.username};
+    });
+  }
+});
+
+Template.quicklogin.events({
+  "click .quicklogin-button": function(event) {
+    var username = event.target.value;
+    Meteor.loginWithPassword(username, "123456");
+  }
+});
+
 //against default signup, which asks for email
 Accounts.ui.config({
   passwordSignupFields: "EMAIL_ONLY"

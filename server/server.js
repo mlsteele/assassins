@@ -15,6 +15,13 @@ function shuffleArray(array) {
 
 Meteor.startup(function () {
   process.env.MAIL_URL = "smtp://outgoing.mit.edu:25/"
+
+
+  if (Meteor.settings.public.fake_db_mode &&
+      Meteor.users.find().count() === 0) {
+    console.log("Filling database with dummy data.");
+    fillDummyDb();
+  }
 });
 
 Meteor.methods({

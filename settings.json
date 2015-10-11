@@ -1,3 +1,6 @@
 {
-  "email_suppress": true
+  "email_suppress": true,
+  "public": {
+    "fake_db_mode": true
+  }
 }

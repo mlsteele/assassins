@@ -82,3 +82,8 @@ input[type=submit], button {
     color: #000;
     padding: 4px;
 }
+.quicklogin-button {
+    font-size: 15px;
+    background-color: #666;
+    border-color: #333;
+}
