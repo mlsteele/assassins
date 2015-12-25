@@ -5,5 +5,5 @@ Game master for assassins.
 Prerequisite: [Install Meteor](https://www.meteor.com/install)
 
 To start the server:
-`$ meteor`
+`$ meteor --settings settings.json`
 

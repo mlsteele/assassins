@@ -6,11 +6,13 @@
   {{/if}}
   </h1>
   {{> loginButtons align="right"}}
-  {{#if currentUser}}
-    {{> yield}}
-  {{else}}
-    {{> loginplz}}
-  {{/if}}
+  <main>
+    {{#if currentUser}}
+	{{> yield}}
+    {{else}}
+	{{> loginplz}}
+    {{/if}}
+  </main>
 </template>
 
 <template name="home">
@@ -33,7 +35,7 @@
 </template>
 
 <template name="nogame">
-  <button class="nogame-link nogame-join">Join a game</button>
+  <button class="nogame-link nogame-join">Join a game</button> or
   <button class="nogame-link nogame-create">Create a new game</button>
   {{#if joining}}
     {{> join}}
