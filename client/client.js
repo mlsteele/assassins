@@ -106,10 +106,13 @@ Template.home.helpers({
     return game.started && !game.finished;
   },
   gameFinished: function() {
+    console.log("checking if gameFinished");
     var gameId = getCurrentGameId();
     if (gameId == undefined) return false;
     var game = Games.findOne({_id: gameId});
     if (game== undefined) return false;
+    console.log("the gameFinished actually did something!");
+    console.log("game finished eval:", game.finished);
     return game.finished;
   }
 });
@@ -264,12 +267,14 @@ Template.pregame.events({
             _id: character._id
         }, { 
             $set: {gameId: undefined}
-        });
+        }); 
   },
   "click #leavePregame": function(event) {
+      console.log("leave game")
       event.preventDefault();
       Characters.remove({_id: getCurrentCharacter()._id});
       setCurrentCharacterId(undefined);
+      console.log("leave leavePregame")
       //TODO fix set is empty error
   }
 });
