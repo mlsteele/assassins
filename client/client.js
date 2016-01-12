@@ -116,8 +116,8 @@ Template.home.helpers({
     return game.finished;
   },
   isDead: function() {
-    var char = getCurrentCharacter();
-    return !char.isAlive;
+    var character = getCurrentCharacter();
+    return !character.alive;
   }
 });
 
