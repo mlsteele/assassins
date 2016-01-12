@@ -66,6 +66,7 @@ Meteor.methods({
         $set: {finished: true}
     });
     console.log(game);
+    console.log(game.mailingList)
     Meteor.assassinsEmails.cancelled(game.mailingList, game.name)
     if (game.started){
       //TODO send Email saying that running game has been canceled

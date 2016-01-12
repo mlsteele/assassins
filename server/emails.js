@@ -46,7 +46,6 @@ Meteor.assassinsEmails.invitation = function(to_email, game_name) {
 
 Meteor.assassinsEmails.cancelled = function(to_email, game_name) {
   // This game has been cancelled.
-  var emails = to_users.map(emailAddress);
 
   sendEmail({
     "from": "assassins-master@mit.edu",
