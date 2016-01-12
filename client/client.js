@@ -114,6 +114,10 @@ Template.home.helpers({
     console.log("the gameFinished actually did something!");
     console.log("game finished eval:", game.finished);
     return game.finished;
+  },
+  isDead: function() {
+    var char = getCurrentCharacter();
+    return !char.isAlive;
   }
 });
 

@@ -21,7 +21,11 @@
   {{else}}
     {{#if joinedGame}}
         {{#if gameRunning}}
-            {{> dashboard}}
+            {{#if isDead}}
+                {{> dead}}
+            {{else}}
+                {{> dashboard}}
+            {{/if}}
         {{else}}
             {{> pregame}}
         {{/if}}
