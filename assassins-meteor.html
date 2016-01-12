@@ -17,16 +17,17 @@
 
 <template name="home">
   {{#if gameFinished}}
-    {{> no game}}
-  {{/if}}
-  {{#if joinedGame}}
-    {{#if gameRunning}}
-      {{> dashboard}}
-    {{else}}
-      {{> pregame}}
-    {{/if}}
-  {{else}}
     {{> nogame}}
+  {{else}}
+    {{#if joinedGame}}
+        {{#if gameRunning}}
+            {{> dashboard}}
+        {{else}}
+            {{> pregame}}
+        {{/if}}
+    {{else}}
+        {{> nogame}}
+    {{/if}}
   {{/if}}
 </template>
 
@@ -92,6 +93,10 @@
   {{/if}}
 </template>
 
+<template name="dead">
+    <h2> You are dead </h2>
+    <p> better luck next time! </p>
+</template>
 <template name="pregame">
   {{#if currentUser}}
     <h2>Game: {{name}} has not started</h2>
