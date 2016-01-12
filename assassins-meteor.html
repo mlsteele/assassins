@@ -21,11 +21,7 @@
   {{else}}
     {{#if joinedGame}}
         {{#if gameRunning}}
-            {{#if isDead}}
-                {{> dead}}
-            {{else}}
-                {{> dashboard}}
-            {{/if}}
+            {{> dashboard}}
         {{else}}
             {{> pregame}}
         {{/if}}
@@ -86,9 +82,14 @@
 
 <template name="dashboard">
   {{#if currentUser}}
-    <h2>Dashboard</h2>
-    <p><b>Your Target:</b> {{target}} </p>
-    <p><button name="die" class="die">I've been killed!</button></p>
+  <h2>Dashboard</h2>
+    {{#if isDead}}
+    <h3> You are dead.</h3>
+    <p>Better luck next time </p>
+    {{else}}
+        <p><b>Your Target:</b> {{target}} </p>
+        <p><button name="die" class="die">I've been killed!</button></p>
+    {{/if}}
     <p>Players:</p>
     {{> playerslist}}
     <p><button name="guess" class="guess">Guess</button></p>

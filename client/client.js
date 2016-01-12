@@ -322,6 +322,10 @@ Template.dashboard.helpers({
         var targetCharacter = Characters.findOne({_id: targetId});
         var targetUser = Meteor.users.findOne({_id: targetCharacter.userId});
         return targetUser.profile.name;
+    },
+    isDead: function() {
+        var character = getCurrentCharacter();
+        return !character.alive;
     }
 });
 Template.dashboard.events({
